@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangle Toggle</title>
+    <style>
+    
+        .centerContainer
+        {
+            position: fixed;
+            justify-content: center;
+            align-items: center;
+            top:50%;
+            left: 50%;
+            transform:translate(-50%,-50%);
+            
+        }
+
+        .centerRow
+        {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rectangle
+        {
+            width: 100px;
+            height: 100px;
+            background-color: #ffcc00;
+            opacity: 0.5;
+
+            margin: 5px;
+            border: 5px solid transparent;
+            border-collapse: collapse;
+            border-radius: 25px;
+            
+            justify-content: center;
+            align-items: center;
+            
+            display: flex;
+
+            font-size: 50px;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .bar
+        {
+            width : 50px;
+            height : 200px;
+            background-color: #ffcc00;
+
+            margin: 5px;
+            border: 0px solid transparent;
+            border-collapse: collapse;
+            border-radius: 15px;
+        }
+
+        .blank
+        {
+            width: 100px;
+            height: 100px;
+        }
+
+    </style>
+</head>
+<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+
+    <div class="centerContainer">
+        <div class="centerRow" style="display:flex;color:#202020;font-size:25px;width:1920px;">
+            <span style="text-align: center;">
+                [oct : <text id="field_octave">5</text>]&nbsp&nbsp&nbsp
+                [semitone : <text id="field_semitone">0</text>]&nbsp&nbsp&nbsp
+                [atk : <text id="field_atk">0.25</text>]&nbsp&nbsp&nbsp
+                [vol : <text id="field_vol">0.25</text>]&nbsp&nbsp&nbsp
+                [rel : <text id="field_rel">0.25</text>]&nbsp&nbsp&nbsp
+                [type : <text id="field_type">square</text>]<br>
+                <br>
+            </span>
+        </div>
+        <div style="height:100px"></div>
+        <div class="centerRow" style="align-items: baseline;">
+            <div class="blank" style="width:50px;height:210px;"></div>
+
+            <div id="bar_a" class="bar"></div>
+            <div id="bar_w" class="bar"></div>
+            <div id="bar_s" class="bar"></div>
+            <div id="bar_e" class="bar"></div>
+            <div id="bar_d" class="bar"></div>
+
+            <div id="bar_f" class="bar"></div>
+            <div id="bar_t" class="bar"></div>
+            <div id="bar_g" class="bar"></div>
+            <div id="bar_y" class="bar"></div>
+            <div id="bar_h" class="bar"></div>
+            <div id="bar_u" class="bar"></div>
+            <div id="bar_j" class="bar"></div>
+
+            <div id="bar_k" class="bar"></div>
+            <div id="bar_o" class="bar"></div>
+            <div id="bar_l" class="bar"></div>
+            <div id="bar_p" class="bar"></div>
+            <div id="bar_sc" class="bar"></div>
+            <div id="bar_qm" class="bar"></div>
+
+            <div class="blank" style="width:50px;height:210px;"></div>
+        </div>
+        <div style="height:100px"></div>
+        <div class="centerRow">
+            <div id="rec_w" class="rectangle"><span>w</span></div>
+            <div id="rec_e" class="rectangle"><span>e</span></div>
+
+            <div class="blank"></div>
+
+            <div id="rec_t" class="rectangle"><span>t</span></div>
+            <div id="rec_y" class="rectangle"><span>y</span></div>
+            <div id="rec_u" class="rectangle"><span>u</span></div>
+
+            <div class="blank"></div>
+
+            <div id="rec_o" class="rectangle"><span>o</span></div>
+            <div id="rec_p" class="rectangle"><span>p</span></div>
+
+            <div class="blank"></div>
+            
+        </div>
+        <div class="centerRow">
+            <div id="rec_a" class="rectangle"><span>a</span></div>
+            <div id="rec_s" class="rectangle"><span>s</span></div>
+            <div id="rec_d" class="rectangle"><span>d</span></div>
+
+            <div id="rec_f" class="rectangle"><span>f</span></div>
+            <div id="rec_g" class="rectangle"><span>g</span></div>
+            <div id="rec_h" class="rectangle"><span>h</span></div>
+            <div id="rec_j" class="rectangle"><span>j</span></div>
+
+            <div id="rec_k" class="rectangle"><span>k</span></div>
+            <div id="rec_l" class="rectangle"><span>l</span></div>
+            <div id="rec_sc" class="rectangle"><span>;</span></div>
+            <div id="rec_qm" class="rectangle"><span>'</span></div>
+            
+        </div>
+        <div class="centerRow" style="display:flex;color:#202020;font-size:25px;width:1920px;">
+            <span style="text-align: center;">
+                <br>
+                <text style="color:#400000;">[= : start (MANDATORY)]<br></text>
+                [z : octave-1] &nbsp&nbsp&nbsp [x : octave+1] &nbsp&nbsp&nbsp [c : semitone-1] &nbsp&nbsp&nbsp [v : semitone+1]<br>
+                [b : attack-1] &nbsp&nbsp&nbsp [n : attack+1] &nbsp&nbsp&nbsp [m : vol-1] &nbsp&nbsp&nbsp [, : vol+1] &nbsp&nbsp&nbsp [. : release-1] &nbsp&nbsp&nbsp [/ : release+1]<br>
+                [1 : sine]&nbsp&nbsp&nbsp[2 : triangle]&nbsp&nbsp&nbsp[3 : sawtooth]&nbsp&nbsp&nbsp[4 : square]
+            </span>
+        </div>
+        
+        
+    </div>
+
+    <script>
+
+        let isREADY = false;
+
+        let chaAll = ["a","w","s","e","d","f","t","g","y","h","u","j","k","o","l","p",";","\'"]
+
+        // Select the rectangle element
+        const rec_a = document.getElementById("rec_a");
+        const rec_w = document.getElementById("rec_w");
+        const rec_s = document.getElementById("rec_s");
+        const rec_e = document.getElementById("rec_e");
+        const rec_d = document.getElementById("rec_d");
+
+        const rec_f = document.getElementById("rec_f");
+        const rec_t = document.getElementById("rec_t");
+        const rec_g = document.getElementById("rec_g");
+        const rec_y = document.getElementById("rec_y");
+        const rec_h = document.getElementById("rec_h");
+        const rec_u = document.getElementById("rec_u");
+        const rec_j = document.getElementById("rec_j");
+
+        const rec_k = document.getElementById("rec_k");
+        const rec_o = document.getElementById("rec_o");
+        const rec_l = document.getElementById("rec_l");
+        const rec_p = document.getElementById("rec_p");
+        const rec_sc = document.getElementById("rec_sc");
+        const rec_qm = document.getElementById("rec_qm");
+
+        const bar_a = document.getElementById("bar_a");
+        const bar_w = document.getElementById("bar_w");
+        const bar_s = document.getElementById("bar_s");
+        const bar_e = document.getElementById("bar_e");
+        const bar_d = document.getElementById("bar_d");
+
+        const bar_f = document.getElementById("bar_f");
+        const bar_t = document.getElementById("bar_t");
+        const bar_g = document.getElementById("bar_g");
+        const bar_y = document.getElementById("bar_y");
+        const bar_h = document.getElementById("bar_h");
+        const bar_u = document.getElementById("bar_u");
+        const bar_j = document.getElementById("bar_j");
+
+        const bar_k = document.getElementById("bar_k");
+        const bar_o = document.getElementById("bar_o");
+        const bar_l = document.getElementById("bar_l");
+        const bar_p = document.getElementById("bar_p");
+        const bar_sc = document.getElementById("bar_sc");
+        const bar_qm = document.getElementById("bar_qm");
+
+        const field_octave = document.getElementById("field_octave");
+        const field_semitone = document.getElementById("field_semitone");
+        const field_atk = document.getElementById("field_atk");
+        const field_vol = document.getElementById("field_vol");
+        const field_rel = document.getElementById("field_rel");
+        const field_type = document.getElementById("field_type");
+
+        let recAll = [ rec_a,rec_w,rec_s,rec_e,rec_d , rec_f,rec_t,rec_g,rec_y,rec_h,rec_u,rec_j , rec_k,rec_o,rec_l,rec_p,rec_sc , rec_qm];
+        let barAll = [ bar_a,bar_w,bar_s,bar_e,bar_d , bar_f,bar_t,bar_g,bar_y,bar_h,bar_u,bar_j , bar_k,bar_o,bar_l,bar_p,bar_sc , bar_qm];
+
+        let colorON = "1"
+        let colorOFF = "0.5"
+
+        //generate oscillators
+
+        const adkt_a = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_w = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_s = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_e = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_d = new (window.AudioContext || window.webkitAudioContext)();
+
+        const adkt_f = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_t = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_g = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_y = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_h = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_u = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_j = new (window.AudioContext || window.webkitAudioContext)();
+
+        const adkt_k = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_o = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_l = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_p = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_sc = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_qm = new (window.AudioContext || window.webkitAudioContext)();
+
+        console.log("new audioKontext");
+
+        const osc_a = adkt_a.createOscillator();
+        const osc_w = adkt_w.createOscillator();
+        const osc_s = adkt_s.createOscillator();
+        const osc_e = adkt_e.createOscillator();
+        const osc_d = adkt_d.createOscillator();
+
+        const osc_f = adkt_f.createOscillator();
+        const osc_t = adkt_t.createOscillator();
+        const osc_g = adkt_g.createOscillator();
+        const osc_y = adkt_y.createOscillator();
+        const osc_h = adkt_h.createOscillator();
+        const osc_u = adkt_u.createOscillator();
+        const osc_j = adkt_j.createOscillator();
+
+        const osc_k = adkt_k.createOscillator();
+        const osc_o = adkt_o.createOscillator();
+        const osc_l = adkt_l.createOscillator();
+        const osc_p = adkt_p.createOscillator();
+        const osc_sc = adkt_sc.createOscillator();
+        const osc_qm = adkt_qm.createOscillator();
+
+        let osc_type = "square";
+
+
+        const gan_a = adkt_a.createGain();
+        const gan_w = adkt_w.createGain();
+        const gan_s = adkt_s.createGain();
+        const gan_e = adkt_e.createGain();
+        const gan_d = adkt_d.createGain();
+
+        const gan_f = adkt_f.createGain();
+        const gan_t = adkt_t.createGain();
+        const gan_g = adkt_g.createGain();
+        const gan_y = adkt_y.createGain();
+        const gan_h = adkt_h.createGain();
+        const gan_u = adkt_u.createGain();
+        const gan_j = adkt_j.createGain();
+
+        const gan_k = adkt_k.createGain();
+        const gan_o = adkt_o.createGain();
+        const gan_l = adkt_l.createGain();
+        const gan_p = adkt_p.createGain();
+        const gan_sc = adkt_sc.createGain();
+        const gan_qm = adkt_qm.createGain();
+
+        let gan_vol = 0.25;
+        let gan_attack = 0.25;
+        let gan_release = 0.25;
+        let gan_delta = 1/256;
+
+
+
+        let adktAll =   [ adkt_a,adkt_w,adkt_s,adkt_e,adkt_d , adkt_f,adkt_t,adkt_g,adkt_y,adkt_h,adkt_u,adkt_j , adkt_k,adkt_o,adkt_l,adkt_p,adkt_sc , adkt_qm];
+        let oscAll =    [ osc_a, osc_w, osc_s, osc_e, osc_d  , osc_f, osc_t, osc_g, osc_y, osc_h, osc_u, osc_j  , osc_k, osc_o, osc_l, osc_p, osc_sc  , osc_qm];
+        let ganAll =    [ gan_a, gan_w, gan_s, gan_e, gan_d  , gan_f, gan_t, gan_g, gan_y, gan_h, gan_u, gan_j  , gan_k, gan_o, gan_l, gan_p, gan_sc  , gan_qm];
+
+        let freqAll = 
+        [
+            523.2511, //C5
+            554.3653,
+            587.3295,
+            622.254,
+            659.2551,
+            
+            698.4565,
+            739.9888,
+            783.9909,
+            830.6094,
+            880,
+            932.3275,
+            987.7666,
+
+            523.2511 * 2,
+            554.3653 * 2,
+            587.3295 * 2,
+            622.254 * 2,
+            659.2551 * 2,
+            
+            698.4565 * 2
+        ]
+
+        let freq_oct = 5;
+        let freq_sem = 0;
+        
+        
+
+        function POwO_ifKeyDownSetFlex(event, InString, InObject, InAdkt, InGan)
+        {
+            if (event.key === InString)
+            {
+                InObject.style.opacity = "1";
+            }
+        }
+
+        function POwO_ifKeyDownSetNone(event, InString, InObject, InAdkt, InGan)
+        {
+            if (event.key === InString)
+            {
+                InObject.style.opacity = "0.5";
+            }
+        }
+
+
+        function POwO_OscilatorSetType(InString)
+        {
+            for(let i = 0 ; i < oscAll.length ; i++)
+            {
+                oscAll[i].type = InString;
+            }
+        }
+
+        function POwO_OscilatorFreq_Zero()
+        {
+            for(let i = 0 ; i < oscAll.length ; i++)
+            {
+                oscAll[i].frequency.setValueAtTime(0,adktAll[i].currentTime);
+            }
+
+            for(let i = 0 ; i < oscAll.length ; i++)
+            {
+                console.log("oscAll[" + i.toString() + "] : " + oscAll[i].frequency.value.toString());
+            }
+        }
+
+        function POwO_OscilatorFreq()
+        {
+            for(let i = 0 ; i < freqAll.length ; i++)
+            {
+                oscAll[i].frequency.setValueAtTime(freqAll[i],adktAll[i].currentTime);
+            }
+        }
+
+        function POwO_ConnectAll()
+        {
+            for(let i = 0 ; i < oscAll.length ; i++)
+            {
+                oscAll[i].connect(ganAll[i]);
+                ganAll[i].connect(adktAll[i].destination);
+            }
+        }
+
+        function POwO_OscilatorAllStart()
+        {
+            for(let i = 0 ; i < oscAll.length ; i++)
+            {
+                oscAll[i].start();
+            }
+        }
+
+        async function POwO_adktSetup()
+        {
+            for(var i  = 0; i < adktAll.length ; i++)
+            {
+                await adktAll[i].resume();
+            }
+            POwO_OscilatorSetType("square")
+            POwO_OscilatorFreq_Zero();
+            for(var i  = 0; i < adktAll.length ; i++)
+            {
+                ganAll[i].gain.setValueAtTime(0,adktAll[i].currentTime)
+            }
+            POwO_OscilatorFreq();
+            POwO_ConnectAll()
+            POwO_OscilatorAllStart()
+            console.log("=")
+            isREADY = true;
+        }
+
+
+
+        function POwO_Tone_Up()
+        {
+            for(var i = 0 ; i < 12 ; i++)
+            {
+                freqAll[i] = freqAll[i+1];
+            }
+
+            for(var i = 12 ; i < freqAll.length ; i++)
+            {
+                freqAll[i] = freqAll[i-12] * 2;
+            }
+
+        }
+
+        function POwO_Tone_Down()
+        {
+            for(var i = 12 ; 0 < i ; i--) //for 1 to 12
+            {
+                freqAll[i] = freqAll[i-1];
+            }
+
+            freqAll[0] = freqAll[12] / 2;
+
+            for(var i = 13 ; i < freqAll.length ; i++)
+            {
+                freqAll[i] = freqAll[i-12] * 2;
+            }
+
+        }
+
+        function POwO_Tone_Fly()
+        {
+            for(var i = 0 ; i < freqAll.length ; i++)
+            {
+                freqAll[i] = freqAll[i] * 2;
+            }
+        }
+
+        function POwO_Tone_Drop()
+        {
+            for(var i = 0 ; i < freqAll.length ; i++)
+            {
+                freqAll[i] = freqAll[i] / 2;
+            }
+        }
+
+
+
+        // Listen for the 'keydown' event
+        document.addEventListener("keydown", (event) =>
+        {
+            for(let i = 0 ; i < recAll.length ; i++)
+            {
+                POwO_ifKeyDownSetFlex(event, chaAll[i], recAll[i], adktAll[i], ganAll[i]);
+            }
+
+            if (event.key === "=")
+            {
+                POwO_adktSetup();
+            }
+            else if (event.key === "c")
+            {
+                POwO_Tone_Down();
+                POwO_OscilatorFreq()
+                freq_sem--;
+                field_semitone.textContent = freq_sem.toString();
+            }
+            else if (event.key === "v")
+            {
+                POwO_Tone_Up();
+                POwO_OscilatorFreq()
+                freq_sem++;
+                field_semitone.textContent = freq_sem.toString();
+            }
+            else if (event.key === "z")
+            {
+                POwO_Tone_Drop();
+                POwO_OscilatorFreq()
+                freq_oct--;
+                field_octave.textContent = freq_oct.toString();
+            }
+            else if (event.key === "x")
+            {
+                POwO_Tone_Fly();
+                POwO_OscilatorFreq()
+                freq_oct++;
+                field_octave.textContent = freq_oct.toString();
+            }
+            else if (event.key === "b")
+            {
+                gan_attack = Math.max(0,(gan_attack - gan_delta));
+                field_atk.textContent = gan_attack.toString();
+            }
+            else if (event.key === "n")
+            {
+                gan_attack = gan_attack + gan_delta;
+                field_atk.textContent = gan_attack.toString();
+            }
+            else if (event.key === "m")
+            {
+                gan_vol = gan_vol - gan_delta;
+                field_vol.textContent = gan_vol.toString();
+            }
+            else if (event.key === ",")
+            {
+                gan_vol = gan_vol + gan_delta;
+                field_vol.textContent = gan_vol.toString();
+            }
+            else if (event.key === ".")
+            {
+                gan_release = Math.max(0,(gan_release - gan_delta));
+                field_rel.textContent = gan_release.toString();
+            }
+            else if (event.key === "/")
+            {
+                gan_release = gan_release + gan_delta;
+                field_rel.textContent = gan_release.toString();
+            }
+            else if (event.key === "1")
+            {
+                POwO_OscilatorSetType("sine");
+                field_type.textContent = "sine";
+            }
+            else if (event.key === "2")
+            {
+                POwO_OscilatorSetType("triangle");
+                field_type.textContent = "triangle";
+            }
+            else if (event.key === "3")
+            {
+                POwO_OscilatorSetType("sawtooth");
+                field_type.textContent = "sawtooth";
+            }
+            else if (event.key === "4")
+            {
+                POwO_OscilatorSetType("square");
+                field_type.textContent = "square";
+            }
+        });
+
+        document.addEventListener("keyup", (event) =>
+        {
+            for(let i = 0 ; i < recAll.length ; i++)
+            {
+                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i], adktAll[i], ganAll[i]);
+            }
+        });
+
+        for(var i = 0 ; i < barAll.length ; i++)
+        {
+            barAll[i].style.height = 0 + "px";
+        }
+
+
+        setInterval(function(){
+            if (isREADY)
+            {
+                for(var i = 0 ; i < barAll.length ; i++)
+                {
+                    var TargetGain = ganAll[i].gain.value;
+                    if (recAll[i].style.opacity === colorON)
+                    {
+                        TargetGain = Math.min(gan_vol, TargetGain + gan_attack);
+                    }
+                    else
+                    {
+                        TargetGain = Math.max(0,TargetGain - gan_release);
+                    }
+
+                    ganAll[i].gain.setValueAtTime(  TargetGain, adktAll[i].currentTime );
+
+                    barAll[i].style.height = (200 * (ganAll[i].gain.value / gan_vol) ) + "px";
+                }
+                
+            }
+        },10)
+
+
+  </script>
+</body>
+</html>
