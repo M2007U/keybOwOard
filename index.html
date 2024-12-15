@@ -578,9 +578,9 @@
                 case 0:
                     switch (CONTROL_index_1)
                     {
-                        case 0 : ADSR_attack = Math.max(0,(ADSR_attack + ADSR_delta * Direction));                                                      field_adsr_atk.textContent = ADSR_attack.toString();         break;
-                        case 1 : ADSR_sustain = Math.max(0,(Math.min(1 , ADSR_sustain + ADSR_delta * Direction)));                                      field_adsr_sus.textContent = ADSR_sustain.toString();        break;
-                        case 2 : ADSR_release = ADSR_release + ADSR_delta * Direction;                                                                  field_adsr_rel.textContent = ADSR_release.toString();        break;
+                        case 0 : ADSR_attack = POwO_Math_Clamp(1/256 , ADSR_attack + ADSR_delta * Direction , 1);                                                      field_adsr_atk.textContent = ADSR_attack.toString();         break;
+                        case 1 : ADSR_sustain = POwO_Math_Clamp(0, ADSR_sustain + ADSR_delta * Direction , 1);                                      field_adsr_sus.textContent = ADSR_sustain.toString();        break;
+                        case 2 : ADSR_release = POwO_Math_Clamp(1/256 , ADSR_release + ADSR_delta * Direction , 1);                                                                  field_adsr_rel.textContent = ADSR_release.toString();        break;
                         case 3 : Vol_All.gain.setValueAtTime(POwO_Math_Clamp(0,Vol_All.gain.value + Vol_delta * Direction,1), adkt_all.currentTime);    field_adsr_vol.textContent = Vol_All.gain.value.toString();  break;
                         default:break;
                     }
@@ -737,11 +737,11 @@
                     var TargetGain = ADSR_All[i].gain.value;
                     if (recAll[i].style.opacity === colorON)
                     {
-                        TargetGain = Math.min(ADSR_sustain, TargetGain + ADSR_attack);
+                        TargetGain = POwO_Math_Clamp(0,TargetGain + ADSR_attack,ADSR_sustain);
                     }
                     else
                     {
-                        TargetGain = Math.max(0,TargetGain - ADSR_release);
+                        TargetGain = POwO_Math_Clamp(0,TargetGain - ADSR_release,1);
                     }
 
                     ADSR_All[i].gain.setValueAtTime(  TargetGain, adkt_all.currentTime );
