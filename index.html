@@ -65,7 +65,7 @@
 
     </style>
 </head>
-<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+<body style="background-color: black; font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
 
     <div class="centerContainer">
         <div class="centerRow" style="display:flex;color:#202020;font-size:25px;width:1920px;">
@@ -217,83 +217,60 @@
         let colorOFF = "0.5"
 
         //generate oscillators
-
-        const adkt_a = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_w = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_s = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_e = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_d = new (window.AudioContext || window.webkitAudioContext)();
-
-        const adkt_f = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_t = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_g = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_y = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_h = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_u = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_j = new (window.AudioContext || window.webkitAudioContext)();
-
-        const adkt_k = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_o = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_l = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_p = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_sc = new (window.AudioContext || window.webkitAudioContext)();
-        const adkt_qm = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt_all = new (window.AudioContext || window.webkitAudioContext)();
 
         console.log("new audioKontext");
 
-        const osc_a = adkt_a.createOscillator();
-        const osc_w = adkt_w.createOscillator();
-        const osc_s = adkt_s.createOscillator();
-        const osc_e = adkt_e.createOscillator();
-        const osc_d = adkt_d.createOscillator();
+        const osc_a = adkt_all.createOscillator();
+        const osc_w = adkt_all.createOscillator();
+        const osc_s = adkt_all.createOscillator();
+        const osc_e = adkt_all.createOscillator();
+        const osc_d = adkt_all.createOscillator();
 
-        const osc_f = adkt_f.createOscillator();
-        const osc_t = adkt_t.createOscillator();
-        const osc_g = adkt_g.createOscillator();
-        const osc_y = adkt_y.createOscillator();
-        const osc_h = adkt_h.createOscillator();
-        const osc_u = adkt_u.createOscillator();
-        const osc_j = adkt_j.createOscillator();
+        const osc_f = adkt_all.createOscillator();
+        const osc_t = adkt_all.createOscillator();
+        const osc_g = adkt_all.createOscillator();
+        const osc_y = adkt_all.createOscillator();
+        const osc_h = adkt_all.createOscillator();
+        const osc_u = adkt_all.createOscillator();
+        const osc_j = adkt_all.createOscillator();
 
-        const osc_k = adkt_k.createOscillator();
-        const osc_o = adkt_o.createOscillator();
-        const osc_l = adkt_l.createOscillator();
-        const osc_p = adkt_p.createOscillator();
-        const osc_sc = adkt_sc.createOscillator();
-        const osc_qm = adkt_qm.createOscillator();
+        const osc_k = adkt_all.createOscillator();
+        const osc_o = adkt_all.createOscillator();
+        const osc_l = adkt_all.createOscillator();
+        const osc_p = adkt_all.createOscillator();
+        const osc_sc = adkt_all.createOscillator();
+        const osc_qm = adkt_all.createOscillator();
 
         let osc_type = "square";
 
 
-        const gan_a = adkt_a.createGain();
-        const gan_w = adkt_w.createGain();
-        const gan_s = adkt_s.createGain();
-        const gan_e = adkt_e.createGain();
-        const gan_d = adkt_d.createGain();
+        const gan_a = adkt_all.createGain();
+        const gan_w = adkt_all.createGain();
+        const gan_s = adkt_all.createGain();
+        const gan_e = adkt_all.createGain();
+        const gan_d = adkt_all.createGain();
 
-        const gan_f = adkt_f.createGain();
-        const gan_t = adkt_t.createGain();
-        const gan_g = adkt_g.createGain();
-        const gan_y = adkt_y.createGain();
-        const gan_h = adkt_h.createGain();
-        const gan_u = adkt_u.createGain();
-        const gan_j = adkt_j.createGain();
+        const gan_f = adkt_all.createGain();
+        const gan_t = adkt_all.createGain();
+        const gan_g = adkt_all.createGain();
+        const gan_y = adkt_all.createGain();
+        const gan_h = adkt_all.createGain();
+        const gan_u = adkt_all.createGain();
+        const gan_j = adkt_all.createGain();
 
-        const gan_k = adkt_k.createGain();
-        const gan_o = adkt_o.createGain();
-        const gan_l = adkt_l.createGain();
-        const gan_p = adkt_p.createGain();
-        const gan_sc = adkt_sc.createGain();
-        const gan_qm = adkt_qm.createGain();
+        const gan_k = adkt_all.createGain();
+        const gan_o = adkt_all.createGain();
+        const gan_l = adkt_all.createGain();
+        const gan_p = adkt_all.createGain();
+        const gan_sc = adkt_all.createGain();
+        const gan_qm = adkt_all.createGain();
 
         let gan_vol = 0.25;
         let gan_attack = 0.25;
         let gan_release = 0.25;
         let gan_delta = 1/256;
 
-
-
-        let adktAll =   [ adkt_a,adkt_w,adkt_s,adkt_e,adkt_d , adkt_f,adkt_t,adkt_g,adkt_y,adkt_h,adkt_u,adkt_j , adkt_k,adkt_o,adkt_l,adkt_p,adkt_sc , adkt_qm];
         let oscAll =    [ osc_a, osc_w, osc_s, osc_e, osc_d  , osc_f, osc_t, osc_g, osc_y, osc_h, osc_u, osc_j  , osc_k, osc_o, osc_l, osc_p, osc_sc  , osc_qm];
         let ganAll =    [ gan_a, gan_w, gan_s, gan_e, gan_d  , gan_f, gan_t, gan_g, gan_y, gan_h, gan_u, gan_j  , gan_k, gan_o, gan_l, gan_p, gan_sc  , gan_qm];
 
@@ -327,7 +304,7 @@
         
         
 
-        function POwO_ifKeyDownSetFlex(event, InString, InObject, InAdkt, InGan)
+        function POwO_ifKeyDownSetFlex(event, InString, InObject)
         {
             if (event.key === InString)
             {
@@ -335,13 +312,14 @@
             }
         }
 
-        function POwO_ifKeyDownSetNone(event, InString, InObject, InAdkt, InGan)
+        function POwO_ifKeyDownSetNone(event, InString, InObject)
         {
             if (event.key === InString)
             {
                 InObject.style.opacity = "0.5";
             }
         }
+
 
 
         function POwO_OscilatorSetType(InString)
@@ -356,7 +334,7 @@
         {
             for(let i = 0 ; i < oscAll.length ; i++)
             {
-                oscAll[i].frequency.setValueAtTime(0,adktAll[i].currentTime);
+                oscAll[i].frequency.setValueAtTime(0,adkt_all.currentTime);
             }
 
             for(let i = 0 ; i < oscAll.length ; i++)
@@ -369,7 +347,7 @@
         {
             for(let i = 0 ; i < freqAll.length ; i++)
             {
-                oscAll[i].frequency.setValueAtTime(freqAll[i],adktAll[i].currentTime);
+                oscAll[i].frequency.setValueAtTime(freqAll[i],adkt_all.currentTime);
             }
         }
 
@@ -378,7 +356,7 @@
             for(let i = 0 ; i < oscAll.length ; i++)
             {
                 oscAll[i].connect(ganAll[i]);
-                ganAll[i].connect(adktAll[i].destination);
+                ganAll[i].connect(adkt_all.destination);
             }
         }
 
@@ -392,15 +370,11 @@
 
         async function POwO_adktSetup()
         {
-            for(var i  = 0; i < adktAll.length ; i++)
-            {
-                await adktAll[i].resume();
-            }
+            await adkt_all.resume();
             POwO_OscilatorSetType("square")
-            POwO_OscilatorFreq_Zero();
-            for(var i  = 0; i < adktAll.length ; i++)
+            for(var i  = 0; i < ganAll.length ; i++)
             {
-                ganAll[i].gain.setValueAtTime(0,adktAll[i].currentTime)
+                ganAll[i].gain.setValueAtTime(0,adkt_all.currentTime);
             }
             POwO_OscilatorFreq();
             POwO_ConnectAll()
@@ -464,7 +438,7 @@
         {
             for(let i = 0 ; i < recAll.length ; i++)
             {
-                POwO_ifKeyDownSetFlex(event, chaAll[i], recAll[i], adktAll[i], ganAll[i]);
+                POwO_ifKeyDownSetFlex(event, chaAll[i], recAll[i]);
             }
 
             if (event.key === "=")
@@ -555,7 +529,7 @@
         {
             for(let i = 0 ; i < recAll.length ; i++)
             {
-                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i], adktAll[i], ganAll[i]);
+                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
             }
         });
 
@@ -580,7 +554,7 @@
                         TargetGain = Math.max(0,TargetGain - gan_release);
                     }
 
-                    ganAll[i].gain.setValueAtTime(  TargetGain, adktAll[i].currentTime );
+                    ganAll[i].gain.setValueAtTime(  TargetGain, adkt_all.currentTime );
 
                     barAll[i].style.height = (200 * (ganAll[i].gain.value / gan_vol) ) + "px";
                 }
