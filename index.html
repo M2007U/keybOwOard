@@ -409,7 +409,20 @@
         function POwO_Math_Clamp(InMin, InVal, InMax)
         {
             
-            return Math.max(InMin, Math.min(InVal, InMax) );
+            //return Math.max(InMin, Math.min(InVal, InMax) );
+            if (InVal > InMax)
+            {
+                return InMax;
+            }
+            else if (InVal < InMin)
+            {
+                return InMin;
+            }
+            else
+            {
+                return InVal;
+            }
+
         }
 
 
