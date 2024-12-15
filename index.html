@@ -65,17 +65,34 @@
 
     </style>
 </head>
-<body style="background-color: black; font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
 
     <div class="centerContainer">
-        <div class="centerRow" style="display:flex;color:#202020;font-size:25px;width:1920px;">
+        <div class="centerRow" style="display:flex;color:#404040;font-size:16px;width:1920px;">
             <span style="text-align: center;">
+                OSC = &nbsp&nbsp&nbsp
                 [oct : <text id="field_octave">5</text>]&nbsp&nbsp&nbsp
                 [semitone : <text id="field_semitone">0</text>]&nbsp&nbsp&nbsp
-                [atk : <text id="field_atk">0.25</text>]&nbsp&nbsp&nbsp
-                [vol : <text id="field_vol">0.25</text>]&nbsp&nbsp&nbsp
-                [rel : <text id="field_rel">0.25</text>]&nbsp&nbsp&nbsp
                 [type : <text id="field_type">square</text>]<br>
+
+                ADSR = &nbsp&nbsp&nbsp
+                [atk : <text id="field_adsr_atk">1</text>]&nbsp&nbsp&nbsp
+                [sus : <text id="field_adsr_sus">1</text>]&nbsp&nbsp&nbsp
+                [rel : <text id="field_adsr_rel">1</text>]&nbsp&nbsp&nbsp
+                [vol : <text id="field_adsr_vol">0.25</text>]<br>
+                shlf
+                FILTER = &nbsp&nbsp&nbsp
+                [lowpass > freq : <text id="field_filter_lowpass_freq">20000</text>]&nbsp&nbsp&nbsp
+                [lowpass > reso : <text id="field_filter_lowpass_reso">1</text>]&nbsp&nbsp&nbsp
+                [hghpass > freq : <text id="field_filter_hghpass_freq">0</text>]&nbsp&nbsp&nbsp
+                [hghpass > reso : <text id="field_filter_hghpass_reso">1</text>]&nbsp&nbsp&nbsp
+                [lowshlf > freq : <text id="field_filter_lowshlf_freq">0</text>]&nbsp&nbsp&nbsp
+                [lowshlf > gain : <text id="field_filter_lowshlf_gain">0</text>]&nbsp&nbsp&nbsp
+                [hghshlf > freq : <text id="field_filter_hghshlf_freq">20000</text>]&nbsp&nbsp&nbsp
+                [hghshlf > gain : <text id="field_filter_hghshlf_gain">0</text>]<br>
+                <br>
+                <text style="color:#403000;">[Currently Adjusting : <text  id="CONTROL_print">ASDR > overall</text>]</text>
+
                 <br>
             </span>
         </div>
@@ -141,7 +158,7 @@
             <div id="rec_qm" class="rectangle"><span>'</span></div>
             
         </div>
-        <div class="centerRow" style="display:flex;color:#202020;font-size:25px;width:1920px;">
+        <div class="centerRow" style="display:flex;color:#404040;font-size:25px;width:1920px;">
             <span style="text-align: center;">
                 <br>
                 <text style="color:#400000;">[= : start (MANDATORY)]<br></text>
@@ -205,10 +222,30 @@
 
         const field_octave = document.getElementById("field_octave");
         const field_semitone = document.getElementById("field_semitone");
-        const field_atk = document.getElementById("field_atk");
-        const field_vol = document.getElementById("field_vol");
-        const field_rel = document.getElementById("field_rel");
+
         const field_type = document.getElementById("field_type");
+
+        const field_adsr_atk = document.getElementById("field_adsr_atk");
+        const field_adsr_sus = document.getElementById("field_adsr_sus");
+        const field_adsr_rel = document.getElementById("field_adsr_rel");
+        const field_adsr_vol = document.getElementById("field_adsr_vol");
+
+        const field_filter_lowpass_freq = document.getElementById("field_filter_lowpass_freq");
+        const field_filter_lowpass_reso = document.getElementById("field_filter_lowpass_reso");
+        const field_filter_hghpass_freq = document.getElementById("field_filter_hghpass_freq");
+        const field_filter_hghpass_reso = document.getElementById("field_filter_hghpass_reso");
+        const field_filter_lowshlf_freq = document.getElementById("field_filter_lowshlf_freq");
+        const field_filter_lowshlf_gain = document.getElementById("field_filter_lowshlf_gain");
+        const field_filter_hghshlf_freq = document.getElementById("field_filter_hghshlf_freq");
+        const field_filter_hghshlf_gain = document.getElementById("field_filter_hghshlf_gain");
+
+        const field_control_currentChoice = document.getElementById("CONTROL_print");
+
+
+
+
+
+        
 
         let recAll = [ rec_a,rec_w,rec_s,rec_e,rec_d , rec_f,rec_t,rec_g,rec_y,rec_h,rec_u,rec_j , rec_k,rec_o,rec_l,rec_p,rec_sc , rec_qm];
         let barAll = [ bar_a,bar_w,bar_s,bar_e,bar_d , bar_f,bar_t,bar_g,bar_y,bar_h,bar_u,bar_j , bar_k,bar_o,bar_l,bar_p,bar_sc , bar_qm];
@@ -216,10 +253,20 @@
         let colorON = "1"
         let colorOFF = "0.5"
 
-        //generate oscillators
-        const adkt_all = new (window.AudioContext || window.webkitAudioContext)();
 
+
+
+
+        // ---- ---- ---- ---- generate the brain aka audio context
+
+        const adkt_all = new (window.AudioContext || window.webkitAudioContext)();
         console.log("new audioKontext");
+
+
+
+
+
+        // ---- ---- ---- ---- generate oscillators
 
         const osc_a = adkt_all.createOscillator();
         const osc_w = adkt_all.createOscillator();
@@ -242,67 +289,130 @@
         const osc_sc = adkt_all.createOscillator();
         const osc_qm = adkt_all.createOscillator();
 
-        let osc_type = "square";
+        
 
-
-        const gan_a = adkt_all.createGain();
-        const gan_w = adkt_all.createGain();
-        const gan_s = adkt_all.createGain();
-        const gan_e = adkt_all.createGain();
-        const gan_d = adkt_all.createGain();
-
-        const gan_f = adkt_all.createGain();
-        const gan_t = adkt_all.createGain();
-        const gan_g = adkt_all.createGain();
-        const gan_y = adkt_all.createGain();
-        const gan_h = adkt_all.createGain();
-        const gan_u = adkt_all.createGain();
-        const gan_j = adkt_all.createGain();
-
-        const gan_k = adkt_all.createGain();
-        const gan_o = adkt_all.createGain();
-        const gan_l = adkt_all.createGain();
-        const gan_p = adkt_all.createGain();
-        const gan_sc = adkt_all.createGain();
-        const gan_qm = adkt_all.createGain();
-
-        let gan_vol = 0.25;
-        let gan_attack = 0.25;
-        let gan_release = 0.25;
-        let gan_delta = 1/256;
-
-        let oscAll =    [ osc_a, osc_w, osc_s, osc_e, osc_d  , osc_f, osc_t, osc_g, osc_y, osc_h, osc_u, osc_j  , osc_k, osc_o, osc_l, osc_p, osc_sc  , osc_qm];
-        let ganAll =    [ gan_a, gan_w, gan_s, gan_e, gan_d  , gan_f, gan_t, gan_g, gan_y, gan_h, gan_u, gan_j  , gan_k, gan_o, gan_l, gan_p, gan_sc  , gan_qm];
-
-        let freqAll = 
+        //start at C5
+        let freq_All = 
         [
-            523.2511, //C5
-            554.3653,
-            587.3295,
-            622.254,
-            659.2551,
-            
-            698.4565,
-            739.9888,
-            783.9909,
-            830.6094,
-            880,
-            932.3275,
-            987.7666,
-
-            523.2511 * 2,
-            554.3653 * 2,
-            587.3295 * 2,
-            622.254 * 2,
-            659.2551 * 2,
-            
-            698.4565 * 2
+            523.2511, 554.3653, 587.3295, 622.254, 659.2551,
+            698.4565, 739.9888, 783.9909, 830.6094, 880, 932.3275, 987.7666,
+            523.2511 * 2, 554.3653 * 2, 587.3295 * 2, 622.254 * 2, 659.2551 * 2, 698.4565 * 2
         ]
 
         let freq_oct = 5;
         let freq_sem = 0;
+
+        let osc_All =    [ osc_a, osc_w, osc_s, osc_e, osc_d  , osc_f, osc_t, osc_g, osc_y, osc_h, osc_u, osc_j  , osc_k, osc_o, osc_l, osc_p, osc_sc  , osc_qm];
+
+
+
+
+
+
+        // ---- ---- ---- ---- ADSR gain Nodes
+
+        const ADSR_a = adkt_all.createGain();
+        const ADSR_w = adkt_all.createGain();
+        const ADSR_s = adkt_all.createGain();
+        const ADSR_e = adkt_all.createGain();
+        const ADSR_d = adkt_all.createGain();
+
+        const ADSR_f = adkt_all.createGain();
+        const ADSR_t = adkt_all.createGain();
+        const ADSR_g = adkt_all.createGain();
+        const ADSR_y = adkt_all.createGain();
+        const ADSR_h = adkt_all.createGain();
+        const ADSR_u = adkt_all.createGain();
+        const ADSR_j = adkt_all.createGain();
+
+        const ADSR_k = adkt_all.createGain();
+        const ADSR_o = adkt_all.createGain();
+        const ADSR_l = adkt_all.createGain();
+        const ADSR_p = adkt_all.createGain();
+        const ADSR_sc = adkt_all.createGain();
+        const ADSR_qm = adkt_all.createGain();
+
+        let ADSR_sustain = 1;
+        let ADSR_attack = 1;
+        let ADSR_release = 1;
+        let ADSR_delta = 1/256;
+
+        let ADSR_All =    [ ADSR_a, ADSR_w, ADSR_s, ADSR_e, ADSR_d  , ADSR_f, ADSR_t, ADSR_g, ADSR_y, ADSR_h, ADSR_u, ADSR_j  , ADSR_k, ADSR_o, ADSR_l, ADSR_p, ADSR_sc  , ADSR_qm];
+
+        const osc_core = adkt_all.createGain();
+        let osc_type = "square";
+
+
+        // ---- ---- ---- ---- filter
+
+        //frequency range is 0 to 20000
+        //q value range is 0.0001 to 1000
+        //gain range = -8 to 8
+
+        let filter_delta_freq = 10;
+        let filter_delta_qval = 1;
+        let filter_delta_decb = 1/16;
+
+
+        const filter_core_in = adkt_all.createGain();
+        const filter_pass_low = adkt_all.createBiquadFilter(); 
+        const filter_pass_hgh = adkt_all.createBiquadFilter(); 
+        const filter_shlf_low = adkt_all.createBiquadFilter(); 
+        const filter_shlf_hgh = adkt_all.createBiquadFilter(); 
+        const filter_core_out = adkt_all.createGain();
+
         
         
+        
+        
+
+        // ---- ---- ---- ---- Volume node
+
+        const Vol_All = adkt_all.createGain();
+        let Vol_delta = 1/256;
+        Vol_All.gain.setValueAtTime(0.25,adkt_all.currentTime);
+
+
+
+
+    
+
+
+        // ---- ---- ---- ---- parameter control
+
+        let CONTROL_param = 
+        [
+            [
+                "ADSR > attack",
+                "ADSR > sustain",
+                "ADSR > release",
+                "ADSR > overall"
+            ],
+            [
+                "FILTER > lowpass > frequency",
+                "FILTER > lowpass > resonance",
+                "FILTER > highpass > frequency",
+                "FILTER > highpass > resonance",
+                "FILTER > lowshelf > frequency",
+                "FILTER > lowshelf > gain",
+                "FILTER > highshelf > frequency",
+                "FILTER > highshelf > gain"
+            ]
+        ]
+
+        let CONTROL_index_0 = 0;
+        let CONTROL_index_1 = 3;
+
+
+        // ---- ---- ---- ---- now the controls and logics
+
+        function POwO_Math_Clamp(InMin, InVal, InMax)
+        {
+            
+            return Math.max(InMin, Math.min(InVal, InMax) );
+        }
+
+
 
         function POwO_ifKeyDownSetFlex(event, InString, InObject)
         {
@@ -324,59 +434,77 @@
 
         function POwO_OscilatorSetType(InString)
         {
-            for(let i = 0 ; i < oscAll.length ; i++)
+            for(let i = 0 ; i < osc_All.length ; i++)
             {
-                oscAll[i].type = InString;
+                osc_All[i].type = InString;
             }
         }
 
         function POwO_OscilatorFreq_Zero()
         {
-            for(let i = 0 ; i < oscAll.length ; i++)
+            for(let i = 0 ; i < osc_All.length ; i++)
             {
-                oscAll[i].frequency.setValueAtTime(0,adkt_all.currentTime);
+                osc_All[i].frequency.setValueAtTime(0,adkt_all.currentTime);
             }
 
-            for(let i = 0 ; i < oscAll.length ; i++)
+            for(let i = 0 ; i < osc_All.length ; i++)
             {
-                console.log("oscAll[" + i.toString() + "] : " + oscAll[i].frequency.value.toString());
+                console.log("osc_All[" + i.toString() + "] : " + osc_All[i].frequency.value.toString());
             }
         }
 
         function POwO_OscilatorFreq()
         {
-            for(let i = 0 ; i < freqAll.length ; i++)
+            for(let i = 0 ; i < freq_All.length ; i++)
             {
-                oscAll[i].frequency.setValueAtTime(freqAll[i],adkt_all.currentTime);
-            }
-        }
-
-        function POwO_ConnectAll()
-        {
-            for(let i = 0 ; i < oscAll.length ; i++)
-            {
-                oscAll[i].connect(ganAll[i]);
-                ganAll[i].connect(adkt_all.destination);
+                osc_All[i].frequency.setValueAtTime(freq_All[i],adkt_all.currentTime);
             }
         }
 
         function POwO_OscilatorAllStart()
         {
-            for(let i = 0 ; i < oscAll.length ; i++)
+            for(let i = 0 ; i < osc_All.length ; i++)
             {
-                oscAll[i].start();
+                osc_All[i].start();
             }
+        }
+
+
+
+        function POwO_ConnectAll()
+        {
+            for(let i = 0 ; i < osc_All.length ; i++)
+            {
+                osc_All[i].connect(ADSR_All[i]);
+                ADSR_All[i].connect(osc_core);
+            }
+            osc_core.connect(filter_core_in);
+
+            filter_core_in.connect(filter_pass_low);
+            filter_pass_low.connect(filter_pass_hgh);
+            filter_pass_hgh.connect(filter_shlf_low);
+            filter_shlf_low.connect(filter_shlf_hgh);
+            filter_shlf_hgh.connect(filter_core_out);
+            filter_core_out.connect(Vol_All);
+
+            Vol_All.connect(adkt_all.destination);
         }
 
         async function POwO_adktSetup()
         {
             await adkt_all.resume();
             POwO_OscilatorSetType("square")
-            for(var i  = 0; i < ganAll.length ; i++)
+            for(var i  = 0; i < ADSR_All.length ; i++)
             {
-                ganAll[i].gain.setValueAtTime(0,adkt_all.currentTime);
+                ADSR_All[i].gain.setValueAtTime(0,adkt_all.currentTime);
             }
             POwO_OscilatorFreq();
+
+            filter_pass_low.type = 'lowpass';  filter_pass_low.frequency.setValueAtTime(20000   ,adkt_all.currentTime);    filter_pass_low.Q.setValueAtTime(1,adkt_all.currentTime);
+            filter_pass_hgh.type = 'highpass'; filter_pass_hgh.frequency.setValueAtTime(0       ,adkt_all.currentTime);    filter_pass_hgh.Q.setValueAtTime(1,adkt_all.currentTime);
+            filter_shlf_low.type = 'lowshelf'; filter_shlf_low.frequency.setValueAtTime(20000   ,adkt_all.currentTime);    filter_shlf_low.gain.setValueAtTime(0,adkt_all.currentTime);
+            filter_shlf_hgh.type = 'highshelf';filter_shlf_hgh.frequency.setValueAtTime(0       ,adkt_all.currentTime);    filter_shlf_hgh.gain.setValueAtTime(0,adkt_all.currentTime);
+
             POwO_ConnectAll()
             POwO_OscilatorAllStart()
             console.log("=")
@@ -389,12 +517,12 @@
         {
             for(var i = 0 ; i < 12 ; i++)
             {
-                freqAll[i] = freqAll[i+1];
+                freq_All[i] = freq_All[i+1];
             }
 
-            for(var i = 12 ; i < freqAll.length ; i++)
+            for(var i = 12 ; i < freq_All.length ; i++)
             {
-                freqAll[i] = freqAll[i-12] * 2;
+                freq_All[i] = freq_All[i-12] * 2;
             }
 
         }
@@ -403,34 +531,88 @@
         {
             for(var i = 12 ; 0 < i ; i--) //for 1 to 12
             {
-                freqAll[i] = freqAll[i-1];
+                freq_All[i] = freq_All[i-1];
             }
 
-            freqAll[0] = freqAll[12] / 2;
+            freq_All[0] = freq_All[12] / 2;
 
-            for(var i = 13 ; i < freqAll.length ; i++)
+            for(var i = 13 ; i < freq_All.length ; i++)
             {
-                freqAll[i] = freqAll[i-12] * 2;
+                freq_All[i] = freq_All[i-12] * 2;
             }
 
         }
 
         function POwO_Tone_Fly()
         {
-            for(var i = 0 ; i < freqAll.length ; i++)
+            for(var i = 0 ; i < freq_All.length ; i++)
             {
-                freqAll[i] = freqAll[i] * 2;
+                freq_All[i] = freq_All[i] * 2;
             }
         }
 
         function POwO_Tone_Drop()
         {
-            for(var i = 0 ; i < freqAll.length ; i++)
+            for(var i = 0 ; i < freq_All.length ; i++)
             {
-                freqAll[i] = freqAll[i] / 2;
+                freq_All[i] = freq_All[i] / 2;
             }
         }
 
+
+
+        function POwO_Param_Change(InDirection)
+        {
+            let Direction = 1;
+            if (InDirection === "+")
+            {
+                Direction = 1;
+            }
+            else if (InDirection === "-")
+            {
+                Direction = -1;
+            }
+
+            switch (CONTROL_index_0)
+            {
+                case 0:
+                    switch (CONTROL_index_1)
+                    {
+                        case 0 : ADSR_attack = Math.max(0,(ADSR_attack + ADSR_delta * Direction));                                                      field_adsr_atk.textContent = ADSR_attack.toString();         break;
+                        case 1 : ADSR_sustain = Math.max(0,(Math.min(1 , ADSR_sustain + ADSR_delta * Direction)));                                      field_adsr_sus.textContent = ADSR_sustain.toString();        break;
+                        case 2 : ADSR_release = ADSR_release + ADSR_delta * Direction;                                                                  field_adsr_rel.textContent = ADSR_release.toString();        break;
+                        case 3 : Vol_All.gain.setValueAtTime(POwO_Math_Clamp(0,Vol_All.gain.value + Vol_delta * Direction,1), adkt_all.currentTime);    field_adsr_vol.textContent = Vol_All.gain.value.toString();  break;
+                        default:break;
+                    }
+                break;
+                case 1:
+                    switch (CONTROL_index_1)
+                    {
+                        case 0 : filter_pass_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_low.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_lowpass_freq.textContent = filter_pass_low.frequency.value.toString(); break;
+                        case 2 : filter_pass_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_hghpass_freq.textContent = filter_pass_hgh.frequency.value.toString(); break;
+                        case 4 : filter_shlf_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_low.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_lowshlf_freq.textContent = filter_shlf_low.frequency.value.toString(); break;
+                        case 6 : filter_shlf_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_hghshlf_freq.textContent = filter_shlf_hgh.frequency.value.toString(); break;
+
+                        case 1 : filter_pass_low.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_low.Q.value + filter_delta_qval * Direction,1000), adkt_all.currentTime); field_filter_lowpass_reso.textContent = filter_pass_low.Q.value.toString(); break;
+                        case 3 : filter_pass_hgh.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_hgh.Q.value + filter_delta_qval * Direction,1000), adkt_all.currentTime); field_filter_hghpass_reso.textContent = filter_pass_hgh.Q.value.toString(); break;
+                        case 5 : filter_shlf_low.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_low.gain.value + filter_delta_decb * Direction,8), adkt_all.currentTime); field_filter_lowshlf_gain.textContent = filter_shlf_low.gain.value.toString(); break;
+                        case 7 : filter_shlf_hgh.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_hgh.gain.value + filter_delta_decb * Direction,8), adkt_all.currentTime); field_filter_hghshlf_gain.textContent = filter_shlf_hgh.gain.value.toString(); break;
+                    
+                        default:
+                            break;
+                    }
+                break;
+                default:
+                    break;
+            }
+        }
+
+        function POwO_Param_CurrentChoicePrint()
+        {
+            console.log(CONTROL_index_0);
+            console.log(CONTROL_index_1);
+            field_control_currentChoice.textContent = CONTROL_param[CONTROL_index_0][CONTROL_index_1];
+        }
 
 
         // Listen for the 'keydown' event
@@ -475,33 +657,41 @@
             }
             else if (event.key === "b")
             {
-                gan_attack = Math.max(0,(gan_attack - gan_delta));
-                field_atk.textContent = gan_attack.toString();
+                CONTROL_index_0 = (CONTROL_index_0 + (CONTROL_param.length - 1) ) % CONTROL_param.length;
+                CONTROL_index_1 = 0;
+                POwO_Param_CurrentChoicePrint();
             }
             else if (event.key === "n")
             {
-                gan_attack = gan_attack + gan_delta;
-                field_atk.textContent = gan_attack.toString();
+                CONTROL_index_1 = (CONTROL_index_1 + (CONTROL_param[CONTROL_index_0].length - 1)) % CONTROL_param[CONTROL_index_0].length;
+                POwO_Param_CurrentChoicePrint();
             }
             else if (event.key === "m")
             {
-                gan_vol = gan_vol - gan_delta;
-                field_vol.textContent = gan_vol.toString();
+                POwO_Param_Change("-");
             }
             else if (event.key === ",")
             {
-                gan_vol = gan_vol + gan_delta;
-                field_vol.textContent = gan_vol.toString();
+                POwO_Param_Change("+");
             }
             else if (event.key === ".")
             {
-                gan_release = Math.max(0,(gan_release - gan_delta));
-                field_rel.textContent = gan_release.toString();
+                CONTROL_index_1 = (CONTROL_index_1 + 1) % CONTROL_param[CONTROL_index_0].length;
+                POwO_Param_CurrentChoicePrint();
             }
             else if (event.key === "/")
             {
-                gan_release = gan_release + gan_delta;
-                field_rel.textContent = gan_release.toString();
+                CONTROL_index_0 = (CONTROL_index_0 + 1) % CONTROL_param.length;
+                CONTROL_index_1 = 0;
+                POwO_Param_CurrentChoicePrint();
+            }
+            else if (event.key === "9")
+            {
+
+            }
+            else if (event.key === "0")
+            {
+                
             }
             else if (event.key === "1")
             {
@@ -544,19 +734,19 @@
             {
                 for(var i = 0 ; i < barAll.length ; i++)
                 {
-                    var TargetGain = ganAll[i].gain.value;
+                    var TargetGain = ADSR_All[i].gain.value;
                     if (recAll[i].style.opacity === colorON)
                     {
-                        TargetGain = Math.min(gan_vol, TargetGain + gan_attack);
+                        TargetGain = Math.min(ADSR_sustain, TargetGain + ADSR_attack);
                     }
                     else
                     {
-                        TargetGain = Math.max(0,TargetGain - gan_release);
+                        TargetGain = Math.max(0,TargetGain - ADSR_release);
                     }
 
-                    ganAll[i].gain.setValueAtTime(  TargetGain, adkt_all.currentTime );
+                    ADSR_All[i].gain.setValueAtTime(  TargetGain, adkt_all.currentTime );
 
-                    barAll[i].style.height = (200 * (ganAll[i].gain.value / gan_vol) ) + "px";
+                    barAll[i].style.height = (200 * (ADSR_All[i].gain.value / ADSR_sustain) ) + "px";
                 }
                 
             }
