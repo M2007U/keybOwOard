@@ -61,6 +61,8 @@
         {
             width: 100px;
             height: 100px;
+
+            margin: 10px;
         }
 
     </style>
@@ -68,7 +70,7 @@
 <body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
 
     <div class="centerContainer">
-        <div class="centerRow" style="display:flex;color:#404040;font-size:16px;width:1920px;">
+        <div class="centerRow" style="display:flex;color:#404040;font-size:20px;width:1920px;">
             <span style="text-align: center;">
                 OSC = &nbsp&nbsp&nbsp
                 [oct : <text id="field_octave">5</text>]&nbsp&nbsp&nbsp
@@ -158,13 +160,13 @@
             <div id="rec_qm" class="rectangle"><span>'</span></div>
             
         </div>
-        <div class="centerRow" style="display:flex;color:#404040;font-size:25px;width:1920px;">
+        <div class="centerRow" style="display:flex;color:#404040;font-size:20px;width:1920px;">
             <span style="text-align: center;">
                 <br>
                 <text style="color:#400000;">[= : start (MANDATORY)]<br></text>
-                [z : octave-1] &nbsp&nbsp&nbsp [x : octave+1] &nbsp&nbsp&nbsp [c : semitone-1] &nbsp&nbsp&nbsp [v : semitone+1]<br>
-                [b : switch module left] &nbsp&nbsp&nbsp [n : switch parameter left] &nbsp&nbsp&nbsp [m : parameter decrease] &nbsp&nbsp&nbsp [, : parameter increase] &nbsp&nbsp&nbsp [. : switch parameter right] &nbsp&nbsp&nbsp [/ : switch module right]<br>
-                [1 : sine]&nbsp&nbsp&nbsp[2 : triangle]&nbsp&nbsp&nbsp[3 : sawtooth]&nbsp&nbsp&nbsp[4 : square]
+                [z : oct ↓] &nbsp&nbsp&nbsp [x : oct ↑] &nbsp&nbsp&nbsp [c : semi ↓] &nbsp&nbsp&nbsp [v : semi ↑]<br>
+                [b : module ←] &nbsp&nbsp&nbsp [n : param ←] &nbsp&nbsp&nbsp [m : param ↓] &nbsp&nbsp&nbsp [, : param ↑] &nbsp&nbsp&nbsp [. : param →] &nbsp&nbsp&nbsp [/ : module →]<br>
+                [1 : ◯]&nbsp&nbsp&nbsp[2 : △]&nbsp&nbsp&nbsp[3 : ◺]&nbsp&nbsp&nbsp[4 : ▢]
             </span>
         </div>
         
