@@ -82,7 +82,7 @@
                 [sus : <text id="field_adsr_sus">1</text>]&nbsp&nbsp&nbsp
                 [rel : <text id="field_adsr_rel">1</text>]&nbsp&nbsp&nbsp
                 [vol : <text id="field_adsr_vol">0.25</text>]<br>
-                shlf
+                
                 FILTER = &nbsp&nbsp&nbsp
                 [lowpass > freq : <text id="field_filter_lowpass_freq">20000</text>]&nbsp&nbsp&nbsp
                 [lowpass > reso : <text id="field_filter_lowpass_reso">1</text>]&nbsp&nbsp&nbsp
@@ -590,17 +590,17 @@
 
             switch (CONTROL_index_0)
             {
-                case 0:
+                case 0: //ADSR
                     switch (CONTROL_index_1)
                     {
-                        case 0 : ADSR_attack = POwO_Math_Clamp(1/256 , ADSR_attack + ADSR_delta * Direction , 1);                                                      field_adsr_atk.textContent = ADSR_attack.toString();         break;
-                        case 1 : ADSR_sustain = POwO_Math_Clamp(0, ADSR_sustain + ADSR_delta * Direction , 1);                                      field_adsr_sus.textContent = ADSR_sustain.toString();        break;
-                        case 2 : ADSR_release = POwO_Math_Clamp(1/256 , ADSR_release + ADSR_delta * Direction , 1);                                                                  field_adsr_rel.textContent = ADSR_release.toString();        break;
+                        case 0 : ADSR_attack = POwO_Math_Clamp(1/256 , ADSR_attack + ADSR_delta * Direction , 1);                                       field_adsr_atk.textContent = ADSR_attack.toString();         break;
+                        case 1 : ADSR_sustain = POwO_Math_Clamp(0, ADSR_sustain + ADSR_delta * Direction , 1);                                          field_adsr_sus.textContent = ADSR_sustain.toString();        break;
+                        case 2 : ADSR_release = POwO_Math_Clamp(1/256 , ADSR_release + ADSR_delta * Direction , 1);                                     field_adsr_rel.textContent = ADSR_release.toString();        break;
                         case 3 : Vol_All.gain.setValueAtTime(POwO_Math_Clamp(0,Vol_All.gain.value + Vol_delta * Direction,1), adkt_all.currentTime);    field_adsr_vol.textContent = Vol_All.gain.value.toString();  break;
                         default:break;
                     }
                 break;
-                case 1:
+                case 1: //FILTER
                     switch (CONTROL_index_1)
                     {
                         case 0 : filter_pass_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_low.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_lowpass_freq.textContent = filter_pass_low.frequency.value.toString(); break;
@@ -618,7 +618,7 @@
                     }
                 break;
                 default:
-                    break;
+                break;
             }
         }
 
