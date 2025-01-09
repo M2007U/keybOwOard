@@ -93,7 +93,7 @@
 <body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
 
     <div class="centerContainer">
-        <div class="centerRow" style="display:flex;color:#404040;font-size:12px;width:1920px;">
+        <div class="centerRow" style="display:flex;color:#606060;font-size:12px;width:1920px;">
             <span style="text-align: center;">
                 OSC = &nbsp&nbsp&nbsp
                 [oct : <text id="field_octave">5</text>]&nbsp&nbsp&nbsp
@@ -155,6 +155,7 @@
             <div id="btn_wave_saw" class="button">◺</div>
             <div id="btn_wave_sqr" class="button">▢</div>
             <div style="width: 500px;"></div>
+            <div id="btn_keyTextToggle" class="button">👁️</div>
             <div id="btn_adktSetup" class="button">=</div>
         </div>
         <div style="height:0px"></div>
@@ -204,10 +205,10 @@
             <div id="btn_prm_r" class="button">prm →</div>
             <div id="btn_mod_r" class="button">mod →</div>
         </div>
-        <div class="centerRow" style="display:flex;color:#404040;font-size:12px;width:1920px;">
+        <div class="centerRow" style="display:flex;color:#606060;font-size:12px;width:1920px;">
             <span style="text-align: center;">
                 <br>
-                [1 : ◯]&nbsp&nbsp&nbsp[2 : △]&nbsp&nbsp&nbsp[3 : ◺]&nbsp&nbsp&nbsp[4 : ▢]&nbsp&nbsp&nbsp<text id="field_adktSetup" style="color:#400000;">[= : start / power / setup (MANDATORY)]</text><br>
+                [1 : ◯]&nbsp&nbsp&nbsp[2 : △]&nbsp&nbsp&nbsp[3 : ◺]&nbsp&nbsp&nbsp[4 : ▢]&nbsp&nbsp&nbsp[0 : Toggle KeyText]&nbsp&nbsp&nbsp<text id="field_adktSetup" style="color:#600000;">[= : start / power / setup (MANDATORY)]</text><br>
                 [z : oct ↓] &nbsp&nbsp&nbsp [x : oct ↑] &nbsp&nbsp&nbsp [c : semi ↓] &nbsp&nbsp&nbsp [v : semi ↑]  &nbsp&nbsp&nbsp 
                 [b : module ←] &nbsp&nbsp&nbsp [n : param ←] &nbsp&nbsp&nbsp [m : param ↓] &nbsp&nbsp&nbsp [, : param ↑] &nbsp&nbsp&nbsp [. : param →] &nbsp&nbsp&nbsp [/ : module →]<br>
                 
@@ -221,7 +222,7 @@
 
         let isREADY = false;
 
-        let chaAll = ["a","w","s","e","d","f","t","g","y","h","u","j","k","o","l","p",";","\'"]
+        let chaAll = ["a","w","s","e","d","f","t","g","y","h","u","j","k","o","l","p",";","'"]
 
         // Select the rectangle element
         const rec_a = document.getElementById("rec_a");
@@ -249,6 +250,7 @@
         const btn_wave_tri = document.getElementById("btn_wave_tri");
         const btn_wave_saw = document.getElementById("btn_wave_saw");
         const btn_wave_sqr = document.getElementById("btn_wave_sqr");
+        const btn_keyTextToggle = document.getElementById("btn_keyTextToggle");
         const btn_adktSetup = document.getElementById("btn_adktSetup");
 
         const bar_a = document.getElementById("bar_a");
@@ -586,7 +588,7 @@
             POwO_ConnectAll()
             POwO_OscilatorAllStart()
             console.log("=")
-            field_adktSetup.style.color = "#004000"
+            field_adktSetup.style.color = "#006000"
             isREADY = true;
         }
 
@@ -780,6 +782,24 @@
             field_type.textContent = "square";
         }
 
+        function POwO_Action_KeyTextToggle()
+        {
+            if (rec_a.textContent === "a")
+            {
+                for(var i = 0 ; i < recAll.length ; i++)
+                {
+                    recAll[i].textContent = "";
+                }
+            }
+            else
+            {
+                for(var i = 0 ; i < recAll.length ; i++)
+                {
+                    recAll[i].textContent = chaAll[i]
+                }
+            }
+        }
+
 
         
 
@@ -803,14 +823,8 @@
             else if (event.key === ","){POwO_Param_Change("+")}
             else if (event.key === "."){POwO_Action_PrmR()}
             else if (event.key === "/"){POwO_Action_ModR() }
-            else if (event.key === "9")
-            {
-
-            }
-            else if (event.key === "0")
-            {
-                
-            }
+            else if (event.key === "9"){}
+            else if (event.key === "0"){POwO_Action_KeyTextToggle()}
             else if (event.key === "1"){POwO_Action_TypeSin()}
             else if (event.key === "2"){POwO_Action_TypeTri()}
             else if (event.key === "3"){POwO_Action_TypeSaw()}
@@ -846,6 +860,7 @@
         btn_wave_saw.addEventListener("touchstart" , (event) => {POwO_Action_TypeSaw()})
         btn_wave_sqr.addEventListener("touchstart" , (event) => {POwO_Action_TypeSqr()})
 
+        btn_keyTextToggle.addEventListener("touchstart" , (event) => {POwO_Action_KeyTextToggle()})
         btn_adktSetup.addEventListener("touchstart" , (event) => {POwO_adktSetup()})
 
         btn_oct_d.addEventListener("touchstart" , (event) => {POwO_Action_OctaveDown()})
