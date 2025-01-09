@@ -827,35 +827,35 @@
 
         // ---- ---- ---- ---- SCREEN CONTROLS
 
-        function POwO_addEventListen_MouseDownUp_PianoKeys( InRec )
+        function POwO_addEventListen_touchstartUp_PianoKeys( InRec )
         {
-            InRec.addEventListener("mousedown", (event) => {InRec.style.opacity = "1";})
-            InRec.addEventListener("mouseup", (event) => {InRec.style.opacity = "0.5";})
+            InRec.addEventListener("touchstart", (event) => {InRec.style.opacity = "1";})
+            InRec.addEventListener("touchend", (event) => {InRec.style.opacity = "0.5";})
         }
 
         for(var i = 0 ; i < recAll.length ; i++)
         {
-            POwO_addEventListen_MouseDownUp_PianoKeys(recAll[i])
+            POwO_addEventListen_touchstartUp_PianoKeys(recAll[i])
         }
 
-        btn_wave_sin.addEventListener("mousedown" , (event) => {POwO_Action_TypeSin()})
-        btn_wave_tri.addEventListener("mousedown" , (event) => {POwO_Action_TypeTri()})
-        btn_wave_saw.addEventListener("mousedown" , (event) => {POwO_Action_TypeSaw()})
-        btn_wave_sqr.addEventListener("mousedown" , (event) => {POwO_Action_TypeSqr()})
+        btn_wave_sin.addEventListener("touchstart" , (event) => {POwO_Action_TypeSin()})
+        btn_wave_tri.addEventListener("touchstart" , (event) => {POwO_Action_TypeTri()})
+        btn_wave_saw.addEventListener("touchstart" , (event) => {POwO_Action_TypeSaw()})
+        btn_wave_sqr.addEventListener("touchstart" , (event) => {POwO_Action_TypeSqr()})
 
-        btn_adktSetup.addEventListener("mousedown" , (event) => {POwO_adktSetup()})
+        btn_adktSetup.addEventListener("touchstart" , (event) => {POwO_adktSetup()})
 
-        btn_oct_d.addEventListener("mousedown" , (event) => {POwO_Action_OctaveDown()})
-        btn_oct_u.addEventListener("mousedown" , (event) => {POwO_Action_OctaveUp()})
-        btn_smi_d.addEventListener("mousedown" , (event) => {POwO_Action_SemiDown()})
-        btn_smi_u.addEventListener("mousedown" , (event) => {POwO_Action_SemiUp()})
+        btn_oct_d.addEventListener("touchstart" , (event) => {POwO_Action_OctaveDown()})
+        btn_oct_u.addEventListener("touchstart" , (event) => {POwO_Action_OctaveUp()})
+        btn_smi_d.addEventListener("touchstart" , (event) => {POwO_Action_SemiDown()})
+        btn_smi_u.addEventListener("touchstart" , (event) => {POwO_Action_SemiUp()})
 
-        btn_mod_l.addEventListener("mousedown" , (event) => {POwO_Action_ModL()})
-        btn_prm_l.addEventListener("mousedown" , (event) => {POwO_Action_PrmL()})
-        btn_prm_d.addEventListener("mousedown" , (event) => {POwO_Param_Change("-")})
-        btn_prm_u.addEventListener("mousedown" , (event) => {POwO_Param_Change("+")})
-        btn_prm_r.addEventListener("mousedown" , (event) => {POwO_Action_PrmR})
-        btn_mod_r.addEventListener("mousedown" , (event) => {POwO_Action_ModR()})
+        btn_mod_l.addEventListener("touchstart" , (event) => {POwO_Action_ModL()})
+        btn_prm_l.addEventListener("touchstart" , (event) => {POwO_Action_PrmL()})
+        btn_prm_d.addEventListener("touchstart" , (event) => {POwO_Param_Change("-")})
+        btn_prm_u.addEventListener("touchstart" , (event) => {POwO_Param_Change("+")})
+        btn_prm_r.addEventListener("touchstart" , (event) => {POwO_Action_PrmR})
+        btn_mod_r.addEventListener("touchstart" , (event) => {POwO_Action_ModR()})
 
 
 
