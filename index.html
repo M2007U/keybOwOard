@@ -34,7 +34,7 @@
             margin: 5px;
             border: 5px solid transparent;
             border-collapse: collapse;
-            border-radius: 25px;
+            border-radius: 10px;
             
             justify-content: center;
             align-items: center;
@@ -42,6 +42,29 @@
             display: flex;
 
             font-size: 50px;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .button
+        {
+            width: 50px;
+            height: 50px;
+            background-color: #ffcc00;
+            opacity: 0.5;
+
+            text-align: center;
+
+            margin: 5px;
+            border: 5px solid transparent;
+            border-collapse: collapse;
+            border-radius: 10px;
+            
+            justify-content: center;
+            align-items: center;
+            
+            display: flex;
+
+            font-size: 25px;
             font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
 
@@ -81,7 +104,7 @@
                 [atk : <text id="field_adsr_atk">1</text>]&nbsp&nbsp&nbsp
                 [sus : <text id="field_adsr_sus">1</text>]&nbsp&nbsp&nbsp
                 [rel : <text id="field_adsr_rel">1</text>]&nbsp&nbsp&nbsp
-                [vol : <text id="field_adsr_vol">0.25</text>]<br>
+                [vol : <text id="field_adsr_vol">0.125</text>]<br>
                 
                 FILTER = &nbsp&nbsp&nbsp
                 [lowpass > freq : <text id="field_filter_lowpass_freq">20000</text>]&nbsp&nbsp&nbsp
@@ -98,7 +121,7 @@
                 <br>
             </span>
         </div>
-        <div style="height:100px"></div>
+        <div style="height:25px"></div>
         <div class="centerRow" style="align-items: baseline;">
             <div class="blank" style="width:50px;height:210px;"></div>
 
@@ -125,7 +148,16 @@
 
             <div class="blank" style="width:50px;height:210px;"></div>
         </div>
-        <div style="height:100px"></div>
+        <div style="height:25px"></div>
+        <div class="centerRow">
+            <div id="btn_wave_sin" class="button">◯</div>
+            <div id="btn_wave_tri" class="button">△</div>
+            <div id="btn_wave_saw" class="button">◺</div>
+            <div id="btn_wave_sqr" class="button">▢</div>
+            <div style="width: 800px;"></div>
+            <div id="btn_adktSetup" class="button">=</div>
+        </div>
+        <div style="height:0px"></div>
         <div class="centerRow">
             <div id="rec_w" class="rectangle"><span>w</span></div>
             <div id="rec_e" class="rectangle"><span>e</span></div>
@@ -158,15 +190,27 @@
             <div id="rec_l" class="rectangle"><span>l</span></div>
             <div id="rec_sc" class="rectangle"><span>;</span></div>
             <div id="rec_qm" class="rectangle"><span>'</span></div>
-            
+        </div>
+        <div class="centerRow">
+            <div id="btn_oct_d" class="button">oct ↓</div>
+            <div id="btn_oct_u" class="button">oct ↑</div>
+            <div id="btn_smi_d" class="button">semi ↓</div>
+            <div id="btn_smi_u" class="button">semi ↑</div>
+            <div style="width: 700px;"></div>
+            <div id="btn_mod_l" class="button">mod ←</div>
+            <div id="btn_prm_l" class="button">prm ←</div>
+            <div id="btn_prm_d" class="button">prm ↓</div>
+            <div id="btn_prm_u" class="button">prm ↑</div>
+            <div id="btn_prm_r" class="button">prm →</div>
+            <div id="btn_mod_r" class="button">mod →</div>
         </div>
         <div class="centerRow" style="display:flex;color:#404040;font-size:20px;width:1920px;">
             <span style="text-align: center;">
                 <br>
-                <text style="color:#400000;">[= : start (MANDATORY)]<br></text>
-                [z : oct ↓] &nbsp&nbsp&nbsp [x : oct ↑] &nbsp&nbsp&nbsp [c : semi ↓] &nbsp&nbsp&nbsp [v : semi ↑]<br>
+                [1 : ◯]&nbsp&nbsp&nbsp[2 : △]&nbsp&nbsp&nbsp[3 : ◺]&nbsp&nbsp&nbsp[4 : ▢]&nbsp&nbsp&nbsp<text style="color:#400000;">[= : start / power / setup (MANDATORY)]</text><br>
+                [z : oct ↓] &nbsp&nbsp&nbsp [x : oct ↑] &nbsp&nbsp&nbsp [c : semi ↓] &nbsp&nbsp&nbsp [v : semi ↑]  &nbsp&nbsp&nbsp 
                 [b : module ←] &nbsp&nbsp&nbsp [n : param ←] &nbsp&nbsp&nbsp [m : param ↓] &nbsp&nbsp&nbsp [, : param ↑] &nbsp&nbsp&nbsp [. : param →] &nbsp&nbsp&nbsp [/ : module →]<br>
-                [1 : ◯]&nbsp&nbsp&nbsp[2 : △]&nbsp&nbsp&nbsp[3 : ◺]&nbsp&nbsp&nbsp[4 : ▢]
+                
             </span>
         </div>
         
@@ -201,6 +245,12 @@
         const rec_sc = document.getElementById("rec_sc");
         const rec_qm = document.getElementById("rec_qm");
 
+        const btn_wave_sin = document.getElementById("btn_wave_sin");
+        const btn_wave_tri = document.getElementById("btn_wave_tri");
+        const btn_wave_saw = document.getElementById("btn_wave_saw");
+        const btn_wave_sqr = document.getElementById("btn_wave_sqr");
+        const btn_adktSetup = document.getElementById("btn_adktSetup");
+
         const bar_a = document.getElementById("bar_a");
         const bar_w = document.getElementById("bar_w");
         const bar_s = document.getElementById("bar_s");
@@ -221,6 +271,17 @@
         const bar_p = document.getElementById("bar_p");
         const bar_sc = document.getElementById("bar_sc");
         const bar_qm = document.getElementById("bar_qm");
+
+        const btn_oct_d = document.getElementById("btn_oct_d");
+        const btn_oct_u = document.getElementById("btn_oct_u");
+        const btn_smi_d = document.getElementById("btn_smi_d");
+        const btn_smi_u = document.getElementById("btn_smi_u");
+        const btn_mod_l = document.getElementById("btn_mod_l");
+        const btn_prm_l = document.getElementById("btn_prm_l");
+        const btn_prm_d = document.getElementById("btn_prm_d");
+        const btn_prm_u = document.getElementById("btn_prm_u");
+        const btn_prm_r = document.getElementById("btn_prm_r");
+        const btn_mod_r = document.getElementById("btn_mod_r");
 
         const field_octave = document.getElementById("field_octave");
         const field_semitone = document.getElementById("field_semitone");
@@ -372,7 +433,7 @@
 
         const Vol_All = adkt_all.createGain();
         let Vol_delta = 1/256;
-        Vol_All.gain.setValueAtTime(0.25,adkt_all.currentTime);
+        Vol_All.gain.setValueAtTime(0.125,adkt_all.currentTime);
 
 
 
@@ -630,7 +691,97 @@
         }
 
 
-        // Listen for the 'keydown' event
+
+
+        // ---- ---- ---- ---- ACTIONS
+
+        function POwO_Action_SemiDown()
+        {
+            POwO_Tone_Down();
+            POwO_OscilatorFreq()
+            freq_sem--;
+            field_semitone.textContent = freq_sem.toString();
+        }
+
+        function POwO_Action_SemiUp()
+        {
+            POwO_Tone_Up();
+            POwO_OscilatorFreq()
+            freq_sem++;
+            field_semitone.textContent = freq_sem.toString();
+        }
+
+        function POwO_Action_OctaveDown()
+        {
+            POwO_Tone_Drop();
+            POwO_OscilatorFreq()
+            freq_oct--;
+            field_octave.textContent = freq_oct.toString();
+        }
+
+        function POwO_Action_OctaveUp()
+        {
+            POwO_Tone_Fly();
+            POwO_OscilatorFreq()
+            freq_oct++;
+            field_octave.textContent = freq_oct.toString();
+        }
+
+        function POwO_Action_ModL()
+        {
+            CONTROL_index_0 = (CONTROL_index_0 + (CONTROL_param.length - 1) ) % CONTROL_param.length;
+            CONTROL_index_1 = 0;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_ModR()
+        {
+            CONTROL_index_0 = (CONTROL_index_0 + 1) % CONTROL_param.length;
+            CONTROL_index_1 = 0;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_PrmL()
+        {
+            CONTROL_index_1 = (CONTROL_index_1 + (CONTROL_param[CONTROL_index_0].length - 1)) % CONTROL_param[CONTROL_index_0].length;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_PrmR()
+        {
+            CONTROL_index_1 = (CONTROL_index_1 + 1) % CONTROL_param[CONTROL_index_0].length;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_TypeSin()
+        {
+            POwO_OscilatorSetType("sine");
+            field_type.textContent = "sine";
+        }
+
+        function POwO_Action_TypeTri()
+        {
+            POwO_OscilatorSetType("triangle");
+            field_type.textContent = "triangle";
+        }
+
+        function POwO_Action_TypeSaw()
+        {
+            POwO_OscilatorSetType("sawtooth");
+            field_type.textContent = "sawtooth";
+        }
+
+        function POwO_Action_TypeSqr()
+        {
+            POwO_OscilatorSetType("square");
+            field_type.textContent = "square";
+        }
+
+
+        
+
+        // ---- ---- ---- ---- KEYBOARD CONTROLS : Listen for the 'keydown' event
+        
         document.addEventListener("keydown", (event) =>
         {
             for(let i = 0 ; i < recAll.length ; i++)
@@ -638,68 +789,17 @@
                 POwO_ifKeyDownSetFlex(event, chaAll[i], recAll[i]);
             }
 
-            if (event.key === "=")
-            {
-                POwO_adktSetup();
-            }
-            else if (event.key === "c")
-            {
-                POwO_Tone_Down();
-                POwO_OscilatorFreq()
-                freq_sem--;
-                field_semitone.textContent = freq_sem.toString();
-            }
-            else if (event.key === "v")
-            {
-                POwO_Tone_Up();
-                POwO_OscilatorFreq()
-                freq_sem++;
-                field_semitone.textContent = freq_sem.toString();
-            }
-            else if (event.key === "z")
-            {
-                POwO_Tone_Drop();
-                POwO_OscilatorFreq()
-                freq_oct--;
-                field_octave.textContent = freq_oct.toString();
-            }
-            else if (event.key === "x")
-            {
-                POwO_Tone_Fly();
-                POwO_OscilatorFreq()
-                freq_oct++;
-                field_octave.textContent = freq_oct.toString();
-            }
-            else if (event.key === "b")
-            {
-                CONTROL_index_0 = (CONTROL_index_0 + (CONTROL_param.length - 1) ) % CONTROL_param.length;
-                CONTROL_index_1 = 0;
-                POwO_Param_CurrentChoicePrint();
-            }
-            else if (event.key === "n")
-            {
-                CONTROL_index_1 = (CONTROL_index_1 + (CONTROL_param[CONTROL_index_0].length - 1)) % CONTROL_param[CONTROL_index_0].length;
-                POwO_Param_CurrentChoicePrint();
-            }
-            else if (event.key === "m")
-            {
-                POwO_Param_Change("-");
-            }
-            else if (event.key === ",")
-            {
-                POwO_Param_Change("+");
-            }
-            else if (event.key === ".")
-            {
-                CONTROL_index_1 = (CONTROL_index_1 + 1) % CONTROL_param[CONTROL_index_0].length;
-                POwO_Param_CurrentChoicePrint();
-            }
-            else if (event.key === "/")
-            {
-                CONTROL_index_0 = (CONTROL_index_0 + 1) % CONTROL_param.length;
-                CONTROL_index_1 = 0;
-                POwO_Param_CurrentChoicePrint();
-            }
+            if (event.key === "="){POwO_adktSetup()}
+            else if (event.key === "c"){POwO_Action_SemiDown()}
+            else if (event.key === "v"){POwO_Action_SemiUp()}
+            else if (event.key === "z"){POwO_Action_OctaveDown()}
+            else if (event.key === "x"){POwO_Action_OctaveUp()}
+            else if (event.key === "b"){POwO_Action_ModL()}
+            else if (event.key === "n"){POwO_Action_PrmL()}
+            else if (event.key === "m"){POwO_Param_Change("-")}
+            else if (event.key === ","){POwO_Param_Change("+")}
+            else if (event.key === "."){POwO_Action_PrmR()}
+            else if (event.key === "/"){POwO_Action_ModR() }
             else if (event.key === "9")
             {
 
@@ -708,26 +808,10 @@
             {
                 
             }
-            else if (event.key === "1")
-            {
-                POwO_OscilatorSetType("sine");
-                field_type.textContent = "sine";
-            }
-            else if (event.key === "2")
-            {
-                POwO_OscilatorSetType("triangle");
-                field_type.textContent = "triangle";
-            }
-            else if (event.key === "3")
-            {
-                POwO_OscilatorSetType("sawtooth");
-                field_type.textContent = "sawtooth";
-            }
-            else if (event.key === "4")
-            {
-                POwO_OscilatorSetType("square");
-                field_type.textContent = "square";
-            }
+            else if (event.key === "1"){POwO_Action_TypeSin()}
+            else if (event.key === "2"){POwO_Action_TypeTri()}
+            else if (event.key === "3"){POwO_Action_TypeSaw()}
+            else if (event.key === "4"){POwO_Action_TypeSqr()}
         });
 
         document.addEventListener("keyup", (event) =>
@@ -737,6 +821,45 @@
                 POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
             }
         });
+
+
+
+
+        // ---- ---- ---- ---- SCREEN CONTROLS
+
+        function POwO_addEventListen_MouseDownUp_PianoKeys( InRec )
+        {
+            InRec.addEventListener("mousedown", (event) => {InRec.style.opacity = "1";})
+            InRec.addEventListener("mouseup", (event) => {InRec.style.opacity = "0.5";})
+        }
+
+        for(var i = 0 ; i < recAll.length ; i++)
+        {
+            POwO_addEventListen_MouseDownUp_PianoKeys(recAll[i])
+        }
+
+        btn_wave_sin.addEventListener("mousedown" , (event) => {POwO_Action_TypeSin()})
+        btn_wave_tri.addEventListener("mousedown" , (event) => {POwO_Action_TypeTri()})
+        btn_wave_saw.addEventListener("mousedown" , (event) => {POwO_Action_TypeSaw()})
+        btn_wave_sqr.addEventListener("mousedown" , (event) => {POwO_Action_TypeSqr()})
+
+        btn_adktSetup.addEventListener("mousedown" , (event) => {POwO_adktSetup()})
+
+        btn_oct_d.addEventListener("mousedown" , (event) => {POwO_Action_OctaveDown()})
+        btn_oct_u.addEventListener("mousedown" , (event) => {POwO_Action_OctaveUp()})
+        btn_smi_d.addEventListener("mousedown" , (event) => {POwO_Action_SemiDown()})
+        btn_smi_u.addEventListener("mousedown" , (event) => {POwO_Action_SemiUp()})
+
+        btn_mod_l.addEventListener("mousedown" , (event) => {POwO_Action_ModL()})
+        btn_prm_l.addEventListener("mousedown" , (event) => {POwO_Action_PrmL()})
+        btn_prm_d.addEventListener("mousedown" , (event) => {POwO_Param_Change("-")})
+        btn_prm_u.addEventListener("mousedown" , (event) => {POwO_Param_Change("+")})
+        btn_prm_r.addEventListener("mousedown" , (event) => {POwO_Action_PrmR})
+        btn_mod_r.addEventListener("mousedown" , (event) => {POwO_Action_ModR()})
+
+
+
+        
 
         for(var i = 0 ; i < barAll.length ; i++)
         {
