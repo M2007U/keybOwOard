@@ -156,7 +156,7 @@
             <div id="btn_wave_tri" class="button">△</div>
             <div id="btn_wave_saw" class="button">◺</div>
             <div id="btn_wave_sqr" class="button">▢</div>
-            <div style="width: 500px;"></div>
+            <div style="width: 400px;"></div>
             <div id="btn_keyTextToggle" class="button">👁️</div>
             <div id="btn_adktSetup" class="button">=</div>
         </div>
@@ -502,7 +502,7 @@
             }
         }
 
-        function POwO_ifKeyDownSetNone(event, InString, InObject)
+        function POwO_ifKeyUpSetNone(event, InString, InObject)
         {
             if (event.key === InString)
             {
@@ -541,9 +541,9 @@
 
         
 
-        function POwO_adktSetup()
+        async function POwO_adktSetup()
         {
-            adkt.resume();
+            await adkt.resume();
 
             // default values for oscilators
             POwO_OscilatorSetType("square")
@@ -689,7 +689,6 @@
 
 
 
-
         // ---- ---- ---- ---- ACTIONS
 
         function POwO_Action_SemiDown()
@@ -827,7 +826,7 @@
         {
             for(var i = 0 ; i < recAll.length ; i++)
             {
-                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
+                POwO_ifKeyUpSetNone(event, chaAll[i], recAll[i]);
             }
         });
 
@@ -853,14 +852,8 @@
         btn_wave_sqr.addEventListener("touchstart" , () => {POwO_Action_TypeSqr()})
 
         btn_keyTextToggle.addEventListener("touchstart" , () => {POwO_Action_KeyTextToggle()})
-        btn_adktSetup.addEventListener("touchstart" , (event) => {POwO_adktSetup()})
-        btn_adktSetup.addEventListener("touchend" , (event) => 
-        {
-            for(var i = 0 ; i < recAll.length ; i++)
-            {
-                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
-            }
-        })
+        btn_adktSetup.addEventListener("touchstart" , () => {POwO_adktSetup()})
+        
 
         btn_oct_d.addEventListener("touchstart" , () => {POwO_Action_OctaveDown()})
         btn_oct_u.addEventListener("touchstart" , () => {POwO_Action_OctaveUp()})
