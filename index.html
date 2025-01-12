@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rectangle Toggle</title>
+    <title>keybOwOard</title>
     <style>
     
         .centerContainer
@@ -66,6 +66,8 @@
 
             font-size: 16px;
             font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+            z-index: 1024;
         }
 
         .bar
@@ -326,7 +328,7 @@
 
         // ---- ---- ---- ---- generate the brain aka audio context
 
-        const adkt_all = new (window.AudioContext || window.webkitAudioContext)();
+        const adkt = new (window.AudioContext || window.webkitAudioContext)();
         console.log("new audioKontext");
 
 
@@ -335,26 +337,26 @@
 
         // ---- ---- ---- ---- generate oscillators
 
-        const osc_a = adkt_all.createOscillator();
-        const osc_w = adkt_all.createOscillator();
-        const osc_s = adkt_all.createOscillator();
-        const osc_e = adkt_all.createOscillator();
-        const osc_d = adkt_all.createOscillator();
+        const osc_a = adkt.createOscillator();
+        const osc_w = adkt.createOscillator();
+        const osc_s = adkt.createOscillator();
+        const osc_e = adkt.createOscillator();
+        const osc_d = adkt.createOscillator();
 
-        const osc_f = adkt_all.createOscillator();
-        const osc_t = adkt_all.createOscillator();
-        const osc_g = adkt_all.createOscillator();
-        const osc_y = adkt_all.createOscillator();
-        const osc_h = adkt_all.createOscillator();
-        const osc_u = adkt_all.createOscillator();
-        const osc_j = adkt_all.createOscillator();
+        const osc_f = adkt.createOscillator();
+        const osc_t = adkt.createOscillator();
+        const osc_g = adkt.createOscillator();
+        const osc_y = adkt.createOscillator();
+        const osc_h = adkt.createOscillator();
+        const osc_u = adkt.createOscillator();
+        const osc_j = adkt.createOscillator();
 
-        const osc_k = adkt_all.createOscillator();
-        const osc_o = adkt_all.createOscillator();
-        const osc_l = adkt_all.createOscillator();
-        const osc_p = adkt_all.createOscillator();
-        const osc_sc = adkt_all.createOscillator();
-        const osc_qm = adkt_all.createOscillator();
+        const osc_k = adkt.createOscillator();
+        const osc_o = adkt.createOscillator();
+        const osc_l = adkt.createOscillator();
+        const osc_p = adkt.createOscillator();
+        const osc_sc = adkt.createOscillator();
+        const osc_qm = adkt.createOscillator();
 
         
 
@@ -378,26 +380,26 @@
 
         // ---- ---- ---- ---- ADSR gain Nodes
 
-        const ADSR_a = adkt_all.createGain();
-        const ADSR_w = adkt_all.createGain();
-        const ADSR_s = adkt_all.createGain();
-        const ADSR_e = adkt_all.createGain();
-        const ADSR_d = adkt_all.createGain();
+        const ADSR_a = adkt.createGain();
+        const ADSR_w = adkt.createGain();
+        const ADSR_s = adkt.createGain();
+        const ADSR_e = adkt.createGain();
+        const ADSR_d = adkt.createGain();
 
-        const ADSR_f = adkt_all.createGain();
-        const ADSR_t = adkt_all.createGain();
-        const ADSR_g = adkt_all.createGain();
-        const ADSR_y = adkt_all.createGain();
-        const ADSR_h = adkt_all.createGain();
-        const ADSR_u = adkt_all.createGain();
-        const ADSR_j = adkt_all.createGain();
+        const ADSR_f = adkt.createGain();
+        const ADSR_t = adkt.createGain();
+        const ADSR_g = adkt.createGain();
+        const ADSR_y = adkt.createGain();
+        const ADSR_h = adkt.createGain();
+        const ADSR_u = adkt.createGain();
+        const ADSR_j = adkt.createGain();
 
-        const ADSR_k = adkt_all.createGain();
-        const ADSR_o = adkt_all.createGain();
-        const ADSR_l = adkt_all.createGain();
-        const ADSR_p = adkt_all.createGain();
-        const ADSR_sc = adkt_all.createGain();
-        const ADSR_qm = adkt_all.createGain();
+        const ADSR_k = adkt.createGain();
+        const ADSR_o = adkt.createGain();
+        const ADSR_l = adkt.createGain();
+        const ADSR_p = adkt.createGain();
+        const ADSR_sc = adkt.createGain();
+        const ADSR_qm = adkt.createGain();
 
         let ADSR_sustain = 1;
         let ADSR_attack = 1;
@@ -406,7 +408,7 @@
 
         let ADSR_All =    [ ADSR_a, ADSR_w, ADSR_s, ADSR_e, ADSR_d  , ADSR_f, ADSR_t, ADSR_g, ADSR_y, ADSR_h, ADSR_u, ADSR_j  , ADSR_k, ADSR_o, ADSR_l, ADSR_p, ADSR_sc  , ADSR_qm];
 
-        const osc_core = adkt_all.createGain();
+        const osc_core = adkt.createGain();
         let osc_type = "square";
 
 
@@ -421,12 +423,12 @@
         let filter_delta_decb = 1/16;
 
 
-        const filter_core_in = adkt_all.createGain();
-        const filter_pass_low = adkt_all.createBiquadFilter(); 
-        const filter_pass_hgh = adkt_all.createBiquadFilter(); 
-        const filter_shlf_low = adkt_all.createBiquadFilter(); 
-        const filter_shlf_hgh = adkt_all.createBiquadFilter(); 
-        const filter_core_out = adkt_all.createGain();
+        const filter_core_in = adkt.createGain();
+        const filter_pass_low = adkt.createBiquadFilter(); 
+        const filter_pass_hgh = adkt.createBiquadFilter(); 
+        const filter_shlf_low = adkt.createBiquadFilter(); 
+        const filter_shlf_hgh = adkt.createBiquadFilter(); 
+        const filter_core_out = adkt.createGain();
 
         
         
@@ -435,9 +437,9 @@
 
         // ---- ---- ---- ---- Volume node
 
-        const Vol_All = adkt_all.createGain();
+        const Vol_All = adkt.createGain();
         let Vol_delta = 1/256;
-        Vol_All.gain.setValueAtTime(0.125,adkt_all.currentTime);
+        Vol_All.gain.setValueAtTime(0.125,adkt.currentTime);
 
 
 
@@ -492,8 +494,6 @@
 
         }
 
-
-
         function POwO_ifKeyDownSetFlex(event, InString, InObject)
         {
             if (event.key === InString)
@@ -510,8 +510,6 @@
             }
         }
 
-
-
         function POwO_OscilatorSetType(InString)
         {
             for(let i = 0 ; i < osc_All.length ; i++)
@@ -524,7 +522,7 @@
         {
             for(let i = 0 ; i < osc_All.length ; i++)
             {
-                osc_All[i].frequency.setValueAtTime(0,adkt_all.currentTime);
+                osc_All[i].frequency.setValueAtTime(0,adkt.currentTime);
             }
 
             for(let i = 0 ; i < osc_All.length ; i++)
@@ -537,62 +535,58 @@
         {
             for(let i = 0 ; i < freq_All.length ; i++)
             {
-                osc_All[i].frequency.setValueAtTime(freq_All[i],adkt_all.currentTime);
+                osc_All[i].frequency.setValueAtTime(freq_All[i],adkt.currentTime);
             }
         }
 
-        function POwO_OscilatorAllStart()
+        
+
+        function POwO_adktSetup()
         {
-            for(let i = 0 ; i < osc_All.length ; i++)
+            adkt.resume();
+
+            // default values for oscilators
+            POwO_OscilatorSetType("square")
+            for(var i  = 0; i < ADSR_All.length ; i++)
             {
-                osc_All[i].start();
+                ADSR_All[i].gain.setValueAtTime(0,adkt.currentTime);
             }
-        }
+            POwO_OscilatorFreq();
+
+            // default value for FILTER module
+            filter_pass_low.type = 'lowpass';  filter_pass_low.frequency.setValueAtTime(20000   ,adkt.currentTime);    filter_pass_low.Q.setValueAtTime(1,adkt.currentTime);
+            filter_pass_hgh.type = 'highpass'; filter_pass_hgh.frequency.setValueAtTime(0       ,adkt.currentTime);    filter_pass_hgh.Q.setValueAtTime(1,adkt.currentTime);
+            filter_shlf_low.type = 'lowshelf'; filter_shlf_low.frequency.setValueAtTime(20000   ,adkt.currentTime);    filter_shlf_low.gain.setValueAtTime(0,adkt.currentTime);
+            filter_shlf_hgh.type = 'highshelf';filter_shlf_hgh.frequency.setValueAtTime(0       ,adkt.currentTime);    filter_shlf_hgh.gain.setValueAtTime(0,adkt.currentTime);
 
 
 
-        function POwO_ConnectAll()
-        {
+            // Connect all nodes
             for(let i = 0 ; i < osc_All.length ; i++)
             {
                 osc_All[i].connect(ADSR_All[i]);
                 ADSR_All[i].connect(osc_core);
             }
             osc_core.connect(filter_core_in);
-
             filter_core_in.connect(filter_pass_low);
             filter_pass_low.connect(filter_pass_hgh);
             filter_pass_hgh.connect(filter_shlf_low);
             filter_shlf_low.connect(filter_shlf_hgh);
             filter_shlf_hgh.connect(filter_core_out);
             filter_core_out.connect(Vol_All);
+            Vol_All.connect(adkt.destination);
 
-            Vol_All.connect(adkt_all.destination);
-        }
-
-        async function POwO_adktSetup()
-        {
-            await adkt_all.resume();
-            POwO_OscilatorSetType("square")
-            for(var i  = 0; i < ADSR_All.length ; i++)
+            // start all the oscilators
+            for(let i = 0 ; i < osc_All.length ; i++)
             {
-                ADSR_All[i].gain.setValueAtTime(0,adkt_all.currentTime);
+                osc_All[i].start();
             }
-            POwO_OscilatorFreq();
 
-            filter_pass_low.type = 'lowpass';  filter_pass_low.frequency.setValueAtTime(20000   ,adkt_all.currentTime);    filter_pass_low.Q.setValueAtTime(1,adkt_all.currentTime);
-            filter_pass_hgh.type = 'highpass'; filter_pass_hgh.frequency.setValueAtTime(0       ,adkt_all.currentTime);    filter_pass_hgh.Q.setValueAtTime(1,adkt_all.currentTime);
-            filter_shlf_low.type = 'lowshelf'; filter_shlf_low.frequency.setValueAtTime(20000   ,adkt_all.currentTime);    filter_shlf_low.gain.setValueAtTime(0,adkt_all.currentTime);
-            filter_shlf_hgh.type = 'highshelf';filter_shlf_hgh.frequency.setValueAtTime(0       ,adkt_all.currentTime);    filter_shlf_hgh.gain.setValueAtTime(0,adkt_all.currentTime);
-
-            POwO_ConnectAll()
-            POwO_OscilatorAllStart()
+            // connect successfuly, ready
             console.log("=")
             field_adktSetup.style.color = "#006000"
             isREADY = true;
         }
-
-
 
         function POwO_Tone_Up()
         {
@@ -640,8 +634,6 @@
             }
         }
 
-
-
         function POwO_Param_Change(InDirection)
         {
             let Direction = 1;
@@ -662,22 +654,22 @@
                         case 0 : ADSR_attack = POwO_Math_Clamp(1/256 , ADSR_attack + ADSR_delta * Direction , 1);                                       field_adsr_atk.textContent = ADSR_attack.toString();         break;
                         case 1 : ADSR_sustain = POwO_Math_Clamp(0, ADSR_sustain + ADSR_delta * Direction , 1);                                          field_adsr_sus.textContent = ADSR_sustain.toString();        break;
                         case 2 : ADSR_release = POwO_Math_Clamp(1/256 , ADSR_release + ADSR_delta * Direction , 1);                                     field_adsr_rel.textContent = ADSR_release.toString();        break;
-                        case 3 : Vol_All.gain.setValueAtTime(POwO_Math_Clamp(0,Vol_All.gain.value + Vol_delta * Direction,1), adkt_all.currentTime);    field_adsr_vol.textContent = Vol_All.gain.value.toString();  break;
+                        case 3 : Vol_All.gain.setValueAtTime(POwO_Math_Clamp(0,Vol_All.gain.value + Vol_delta * Direction,1), adkt.currentTime);    field_adsr_vol.textContent = Vol_All.gain.value.toString();  break;
                         default:break;
                     }
                 break;
                 case 1: //FILTER
                     switch (CONTROL_index_1)
                     {
-                        case 0 : filter_pass_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_low.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_lowpass_freq.textContent = filter_pass_low.frequency.value.toString(); break;
-                        case 2 : filter_pass_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_hghpass_freq.textContent = filter_pass_hgh.frequency.value.toString(); break;
-                        case 4 : filter_shlf_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_low.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_lowshlf_freq.textContent = filter_shlf_low.frequency.value.toString(); break;
-                        case 6 : filter_shlf_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt_all.currentTime); field_filter_hghshlf_freq.textContent = filter_shlf_hgh.frequency.value.toString(); break;
+                        case 0 : filter_pass_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_low.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_lowpass_freq.textContent = filter_pass_low.frequency.value.toString(); break;
+                        case 2 : filter_pass_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_hghpass_freq.textContent = filter_pass_hgh.frequency.value.toString(); break;
+                        case 4 : filter_shlf_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_low.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_lowshlf_freq.textContent = filter_shlf_low.frequency.value.toString(); break;
+                        case 6 : filter_shlf_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_hghshlf_freq.textContent = filter_shlf_hgh.frequency.value.toString(); break;
 
-                        case 1 : filter_pass_low.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_low.Q.value + filter_delta_qval * Direction,1000), adkt_all.currentTime); field_filter_lowpass_reso.textContent = filter_pass_low.Q.value.toString(); break;
-                        case 3 : filter_pass_hgh.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_hgh.Q.value + filter_delta_qval * Direction,1000), adkt_all.currentTime); field_filter_hghpass_reso.textContent = filter_pass_hgh.Q.value.toString(); break;
-                        case 5 : filter_shlf_low.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_low.gain.value + filter_delta_decb * Direction,8), adkt_all.currentTime); field_filter_lowshlf_gain.textContent = filter_shlf_low.gain.value.toString(); break;
-                        case 7 : filter_shlf_hgh.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_hgh.gain.value + filter_delta_decb * Direction,8), adkt_all.currentTime); field_filter_hghshlf_gain.textContent = filter_shlf_hgh.gain.value.toString(); break;
+                        case 1 : filter_pass_low.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_low.Q.value + filter_delta_qval * Direction,1000), adkt.currentTime); field_filter_lowpass_reso.textContent = filter_pass_low.Q.value.toString(); break;
+                        case 3 : filter_pass_hgh.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_hgh.Q.value + filter_delta_qval * Direction,1000), adkt.currentTime); field_filter_hghpass_reso.textContent = filter_pass_hgh.Q.value.toString(); break;
+                        case 5 : filter_shlf_low.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_low.gain.value + filter_delta_decb * Direction,8), adkt.currentTime); field_filter_lowshlf_gain.textContent = filter_shlf_low.gain.value.toString(); break;
+                        case 7 : filter_shlf_hgh.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_hgh.gain.value + filter_delta_decb * Direction,8), adkt.currentTime); field_filter_hghshlf_gain.textContent = filter_shlf_hgh.gain.value.toString(); break;
                     
                         default:
                             break;
@@ -802,7 +794,7 @@
 
 
         
-
+        
         // ---- ---- ---- ---- KEYBOARD CONTROLS : Listen for the 'keydown' event
         
         document.addEventListener("keydown", (event) =>
@@ -833,7 +825,7 @@
 
         document.addEventListener("keyup", (event) =>
         {
-            for(let i = 0 ; i < recAll.length ; i++)
+            for(var i = 0 ; i < recAll.length ; i++)
             {
                 POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
             }
@@ -846,8 +838,8 @@
 
         function POwO_addEventListen_touchstartUp_PianoKeys( InRec )
         {
-            InRec.addEventListener("touchstart", (event) => {InRec.style.opacity = "1";})
-            InRec.addEventListener("touchend", (event) => {InRec.style.opacity = "0.5";})
+            InRec.addEventListener("touchstart", () => {InRec.style.opacity = "1";})
+            InRec.addEventListener("touchend", () => {InRec.style.opacity = "0.5";})
         }
 
         for(var i = 0 ; i < recAll.length ; i++)
@@ -855,25 +847,32 @@
             POwO_addEventListen_touchstartUp_PianoKeys(recAll[i])
         }
 
-        btn_wave_sin.addEventListener("touchstart" , (event) => {POwO_Action_TypeSin()})
-        btn_wave_tri.addEventListener("touchstart" , (event) => {POwO_Action_TypeTri()})
-        btn_wave_saw.addEventListener("touchstart" , (event) => {POwO_Action_TypeSaw()})
-        btn_wave_sqr.addEventListener("touchstart" , (event) => {POwO_Action_TypeSqr()})
+        btn_wave_sin.addEventListener("touchstart" , () => {POwO_Action_TypeSin()})
+        btn_wave_tri.addEventListener("touchstart" , () => {POwO_Action_TypeTri()})
+        btn_wave_saw.addEventListener("touchstart" , () => {POwO_Action_TypeSaw()})
+        btn_wave_sqr.addEventListener("touchstart" , () => {POwO_Action_TypeSqr()})
 
-        btn_keyTextToggle.addEventListener("touchstart" , (event) => {POwO_Action_KeyTextToggle()})
+        btn_keyTextToggle.addEventListener("touchstart" , () => {POwO_Action_KeyTextToggle()})
         btn_adktSetup.addEventListener("touchstart" , (event) => {POwO_adktSetup()})
+        btn_adktSetup.addEventListener("touchend" , (event) => 
+        {
+            for(var i = 0 ; i < recAll.length ; i++)
+            {
+                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
+            }
+        })
 
-        btn_oct_d.addEventListener("touchstart" , (event) => {POwO_Action_OctaveDown()})
-        btn_oct_u.addEventListener("touchstart" , (event) => {POwO_Action_OctaveUp()})
-        btn_smi_d.addEventListener("touchstart" , (event) => {POwO_Action_SemiDown()})
-        btn_smi_u.addEventListener("touchstart" , (event) => {POwO_Action_SemiUp()})
+        btn_oct_d.addEventListener("touchstart" , () => {POwO_Action_OctaveDown()})
+        btn_oct_u.addEventListener("touchstart" , () => {POwO_Action_OctaveUp()})
+        btn_smi_d.addEventListener("touchstart" , () => {POwO_Action_SemiDown()})
+        btn_smi_u.addEventListener("touchstart" , () => {POwO_Action_SemiUp()})
 
-        btn_mod_l.addEventListener("touchstart" , (event) => {POwO_Action_ModL()})
-        btn_prm_l.addEventListener("touchstart" , (event) => {POwO_Action_PrmL()})
-        btn_prm_d.addEventListener("touchstart" , (event) => {POwO_Param_Change("-")})
-        btn_prm_u.addEventListener("touchstart" , (event) => {POwO_Param_Change("+")})
-        btn_prm_r.addEventListener("touchstart" , (event) => {POwO_Action_PrmR})
-        btn_mod_r.addEventListener("touchstart" , (event) => {POwO_Action_ModR()})
+        btn_mod_l.addEventListener("touchstart" , () => {POwO_Action_ModL()})
+        btn_prm_l.addEventListener("touchstart" , () => {POwO_Action_PrmL()})
+        btn_prm_d.addEventListener("touchstart" , () => {POwO_Param_Change("-")})
+        btn_prm_u.addEventListener("touchstart" , () => {POwO_Param_Change("+")})
+        btn_prm_r.addEventListener("touchstart" , () => {POwO_Action_PrmR()})
+        btn_mod_r.addEventListener("touchstart" , () => {POwO_Action_ModR()})
 
 
 
@@ -900,7 +899,7 @@
                         TargetGain = POwO_Math_Clamp(0,TargetGain - ADSR_release,1);
                     }
 
-                    ADSR_All[i].gain.setValueAtTime(  TargetGain, adkt_all.currentTime );
+                    ADSR_All[i].gain.setValueAtTime(  TargetGain, adkt.currentTime );
 
                     barAll[i].style.height = (200 * (ADSR_All[i].gain.value / ADSR_sustain) ) + "px";
                 }
