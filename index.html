@@ -90,39 +90,57 @@
             margin: 10px;
         }
 
+        .settingsBox
+        {
+            height:210px;
+            
+            
+            border-radius: 16px;
+            padding: 16px;
+            margin:8px;
+            
+            font-size: 16px;
+            text-align: left;
+
+            background-color: rgba(192,192,192,0.1);
+        }
+
     </style>
 </head>
 <body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
 
     <div class="centerContainer">
+        <div class="centerRow" style="display:flex;color:#606060;font-size:16px;width:1920px;">
+            ver 2025.0917.2147
+        </div>
         <div class="centerRow" style="display:flex;color:#606060;font-size:12px;width:1920px;">
-            <span style="text-align: center;">
-                ver 2025.0112.0234 <br>
-                OSC = &nbsp&nbsp&nbsp
-                [oct : <text id="field_octave">5</text>]&nbsp&nbsp&nbsp
-                [semitone : <text id="field_semitone">0</text>]&nbsp&nbsp&nbsp
-                [type : <text id="field_type">square</text>]<br>
-
-                ADSR = &nbsp&nbsp&nbsp
-                [atk : <text id="field_adsr_atk">1</text>]&nbsp&nbsp&nbsp
-                [sus : <text id="field_adsr_sus">1</text>]&nbsp&nbsp&nbsp
-                [rel : <text id="field_adsr_rel">1</text>]&nbsp&nbsp&nbsp
-                [vol : <text id="field_adsr_vol">0.125</text>]<br>
-                
-                FILTER = &nbsp&nbsp&nbsp
-                [lowpass > freq : <text id="field_filter_lowpass_freq">20000</text>]&nbsp&nbsp&nbsp
-                [lowpass > reso : <text id="field_filter_lowpass_reso">1</text>]&nbsp&nbsp&nbsp
-                [hghpass > freq : <text id="field_filter_hghpass_freq">0</text>]&nbsp&nbsp&nbsp
-                [hghpass > reso : <text id="field_filter_hghpass_reso">1</text>]&nbsp&nbsp&nbsp
-                [lowshlf > freq : <text id="field_filter_lowshlf_freq">0</text>]&nbsp&nbsp&nbsp
-                [lowshlf > gain : <text id="field_filter_lowshlf_gain">0</text>]&nbsp&nbsp&nbsp
-                [hghshlf > freq : <text id="field_filter_hghshlf_freq">20000</text>]&nbsp&nbsp&nbsp
-                [hghshlf > gain : <text id="field_filter_hghshlf_gain">0</text>]<br>
-                <br>
-                <text style="color:#403000;">[Currently Adjusting : <text  id="CONTROL_print">ASDR > overall</text>]</text>
-
-                <br>
-            </span>
+            <div class="settingsBox">
+                <b>OSC</b><br>
+                [oct : <text id="field_octave">5</text>]<br>
+                [semitone : <text id="field_semitone">0</text>]<br>
+                [type : <text id="field_type">square</text>]
+            </div>
+            <div class="settingsBox">
+                <b>ADSR</b><br>
+                [atk : <text id="field_adsr_atk">1</text>]<br>
+                [sus : <text id="field_adsr_sus">1</text>]<br>
+                [rel : <text id="field_adsr_rel">1</text>]<br>
+                [vol : <text id="field_adsr_vol">0.125</text>]
+            </div>
+            <div class="settingsBox">
+                <b>FILTER</b><br>
+                [lowpass > freq : <text id="field_filter_lowpass_freq">20000</text>]<br>
+                [lowpass > reso : <text id="field_filter_lowpass_reso">1</text>]<br>
+                [hghpass > freq : <text id="field_filter_hghpass_freq">0</text>]<br>
+                [hghpass > reso : <text id="field_filter_hghpass_reso">1</text>]<br>
+                [lowshlf > freq : <text id="field_filter_lowshlf_freq">0</text>]<br>
+                [lowshlf > gain : <text id="field_filter_lowshlf_gain">0</text>]<br>
+                [hghshlf > freq : <text id="field_filter_hghshlf_freq">20000</text>]<br>
+                [hghshlf > gain : <text id="field_filter_hghshlf_gain">0</text>]
+            </div>
+        </div>
+        <div class="centerRow" style="display:flex;color:#606060;font-size:16px;width:1920px;">
+            <text style="color:#403000;">[Currently Adjusting : <text  id="CONTROL_print">ASDR > overall</text>]</text>
         </div>
         <div style="height:25px"></div>
         <div class="centerRow" style="align-items: baseline;">
@@ -228,6 +246,7 @@
         let chaAll = ["a","w","s","e","d","f","t","g","y","h","u","j","k","o","l","p",";","'"]
 
         // Select the rectangle element
+
         const rec_a = document.getElementById("rec_a");
         const rec_w = document.getElementById("rec_w");
         const rec_s = document.getElementById("rec_s");
@@ -413,6 +432,11 @@
         let osc_type = "square";
 
 
+
+
+
+
+
         // ---- ---- ---- ---- filter
 
         //frequency range is 0 to 20000
@@ -452,6 +476,12 @@
 
         let CONTROL_param = 
         [
+            [
+                "OSC > oct",
+                "OSC > semi",
+                "OSC > type",
+                "OSC > edo"   
+            ],
             [
                 "ADSR > attack",
                 "ADSR > sustain",
@@ -517,6 +547,8 @@
             {
                 osc_All[i].type = InString;
             }
+
+            osc_type = InString;
         }
 
         function POwO_OscilatorFreq_Zero()
@@ -591,6 +623,7 @@
 
         function POwO_Tone_Up()
         {
+            // go up a semitone
             for(var i = 0 ; i < 12 ; i++)
             {
                 freq_All[i] = freq_All[i+1];
@@ -605,6 +638,7 @@
 
         function POwO_Tone_Down()
         {
+            //go down a semitone
             for(var i = 12 ; 0 < i ; i--) //for 1 to 12
             {
                 freq_All[i] = freq_All[i-1];
@@ -621,6 +655,7 @@
 
         function POwO_Tone_Fly()
         {
+            //go up an octave
             for(var i = 0 ; i < freq_All.length ; i++)
             {
                 freq_All[i] = freq_All[i] * 2;
@@ -629,6 +664,7 @@
 
         function POwO_Tone_Drop()
         {
+            //do down an octave
             for(var i = 0 ; i < freq_All.length ; i++)
             {
                 freq_All[i] = freq_All[i] / 2;
@@ -649,7 +685,33 @@
 
             switch (CONTROL_index_0)
             {
-                case 0: //ADSR
+                case 0: //OSC
+                    switch (CONTROL_index_1)
+                    {
+                        case 0 : if (InDirection === "-") { POwO_Action_OctaveDown() } else { POwO_Action_OctaveUp() } ; break ;  //oct
+                        case 1 : if (InDirection === "-") { POwO_Action_SemiDown() } else { POwO_Action_SemiUp() } ; break ; //semi
+                        case 2 :
+                            if (osc_type === "sine")
+                            {
+                                if (InDirection === "-"){ POwO_Action_TypeSqr() } else { POwO_Action_TypeTri() }
+                            }
+                            else if (osc_type === "triangle")
+                            {
+                                if (InDirection === "-"){ POwO_Action_TypeSin() } else { POwO_Action_TypeSaw() }
+                            }
+                            else if (osc_type === "sawtooth")
+                            {
+                                if (InDirection === "-"){ POwO_Action_TypeTri() } else { POwO_Action_TypeSqr() }
+                            }
+                            else if (osc_type === "square")
+                            {
+                                if (InDirection === "-"){ POwO_Action_TypeSaw() } else { POwO_Action_TypeSin() }
+                            }
+                        break ; //type
+                        case 3 :  ; break; //edo
+                    }
+
+                case 1: //ADSR
                     switch (CONTROL_index_1)
                     {
                         case 0 : ADSR_attack = POwO_Math_Clamp(1/256 , ADSR_attack + ADSR_delta * Direction , 1);                                       field_adsr_atk.textContent = ADSR_attack.toString();         break;
@@ -659,7 +721,7 @@
                         default:break;
                     }
                 break;
-                case 1: //FILTER
+                case 2: //FILTER
                     switch (CONTROL_index_1)
                     {
                         case 0 : filter_pass_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_low.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_lowpass_freq.textContent = filter_pass_low.frequency.value.toString(); break;
@@ -814,7 +876,7 @@
             else if (event.key === "m"){POwO_Param_Change("-")}
             else if (event.key === ","){POwO_Param_Change("+")}
             else if (event.key === "."){POwO_Action_PrmR()}
-            else if (event.key === "/"){POwO_Action_ModR() }
+            else if (event.key === "/"){POwO_Action_ModR();event.preventDefault()}
             else if (event.key === "9"){}
             else if (event.key === "0"){POwO_Action_KeyTextToggle()}
             else if (event.key === "1"){POwO_Action_TypeSin()}
@@ -902,6 +964,6 @@
         },10)
 
 
-  </script>
+    </script>
 </body>
 </html>
